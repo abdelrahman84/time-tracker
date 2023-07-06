@@ -1,0 +1,25 @@
+.timeSelector {
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .inputItem {
+        input {
+            margin-left: 0.5rem;
+            width: 5rem;
+        }
+    }
+
+    button {
+        background: blue;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:disabled {
+        background: gray;
+        cursor: not-allowed;
+    }
+}
