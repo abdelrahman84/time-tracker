@@ -10,13 +10,13 @@ function TimeSelector() {
     const [loopCount, setLoopCount] = useState(0);
 
     const handleMinutesChange = (event: any) => {
-        if (event.target.value.length <= 2) {
+        if (event.target.value.length <= 2 && event.target.value >= 0) {
             setMinutes(event.target.value)
         };
     }
 
     const handleSecondsChange = (event: any) => {
-        if (event.target.value.length <= 2) {
+        if (event.target.value.length <= 2 && event.target.value >= 0) {
             setSeconds(event.target.value)
         };
     }
@@ -26,7 +26,7 @@ function TimeSelector() {
     }
 
     const handleLoopChange = (event: any) => {
-        if (event.target.value.length <= 2) {
+        if (event.target.value.length <= 2 && event.target.value >= 0) {
             setLoopCount(event.target.value)
         };
     }
@@ -35,7 +35,7 @@ function TimeSelector() {
     }
 
     const isButtonDisabled = (): boolean => {
-        return (!minutes || minutes === 0) && (!seconds || seconds === 0);
+        return (minutes <= 0) && (seconds <= 0);
     }
 
     return (
