@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import TimeSelector from './components/timeSelector';
+import TimerDashboard from './components/TimerDashboard';
 
 function App() {
   return (
     <div>
-      <TimeSelector />
+      <TimerDashboard />
     </div>
   );
 }

@@ -2,8 +2,11 @@ import { useState } from "react";
 
 import styles from './TimeSelector.module.scss';
 
+interface TimeSelectorProps {
+    handleStartTimer(): void;
+}
 
-function TimeSelector() {
+function TimeSelector(props: TimeSelectorProps) {
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
     const [isLoopEnabled, setIsLoopEnabled] = useState(false);
@@ -32,6 +35,10 @@ function TimeSelector() {
     }
 
     const handleStart = (): void => {
+        localStorage.setItem('minutes', minutes.toString());
+        localStorage.setItem('seconds', seconds.toString());
+        localStorage.setItem('loopCount', loopCount.toString());
+        props.handleStartTimer();
     }
 
     const isButtonDisabled = (): boolean => {
