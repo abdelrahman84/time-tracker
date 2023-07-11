@@ -3,7 +3,7 @@ import { useState } from "react";
 import styles from './TimeSelector.module.scss';
 
 interface TimeSelectorProps {
-    handleStartTimer(): void;
+    onHandleStartTimer(): void;
 }
 
 function TimeSelector(props: TimeSelectorProps) {
@@ -35,10 +35,8 @@ function TimeSelector(props: TimeSelectorProps) {
     }
 
     const handleStart = (): void => {
-        localStorage.setItem('minutes', minutes.toString());
-        localStorage.setItem('seconds', seconds.toString());
-        localStorage.setItem('loopCount', loopCount.toString());
-        props.handleStartTimer();
+        // tbd set minutes, seconds, loop count
+        props.onHandleStartTimer();
     }
 
     const isButtonDisabled = (): boolean => {
@@ -51,21 +49,21 @@ function TimeSelector(props: TimeSelectorProps) {
                 <label>
                     Input minutes:
                 </label>
-                <input type="number" onChange={handleMinutesChange} value={minutes}></input>
+                <input type="number" onChange={handleMinutesChange} value={minutes} aria-label="minutes-input"></input>
             </div>
 
             <div className={styles.inputItem}>
                 <label>
                     Input seconds:
                 </label>
-                <input type="number" onChange={handleSecondsChange} value={seconds}></input>
+                <input type="number" onChange={handleSecondsChange} value={seconds} aria-label="seconds-input"></input>
             </div>
 
             <div>
                 <label>
                     Repeat:
                 </label>
-                <input type="checkbox" defaultChecked={isLoopEnabled} onChange={handleToggleLoop}></input>
+                <input type="checkbox" defaultChecked={isLoopEnabled} onChange={handleToggleLoop} aria-label="repeat-input"></input>
             </div>
 
             {isLoopEnabled && (
@@ -73,11 +71,11 @@ function TimeSelector(props: TimeSelectorProps) {
                     <label>
                         Loop for:
                     </label>
-                    <input type="number" onChange={handleLoopChange} value={loopCount}></input>
+                    <input type="number" onChange={handleLoopChange} value={loopCount} aria-label="loop-input"></input>
                 </div>
             )}
 
-            <button onClick={handleStart} disabled={isButtonDisabled()}>Start</button>
+            <button onClick={handleStart} disabled={isButtonDisabled()} data-testid="start-btn">Start</button>
         </div>
     )
 }

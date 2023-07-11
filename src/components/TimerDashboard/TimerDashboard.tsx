@@ -5,13 +5,13 @@ function TimerDashboard() {
 
     const [timerStarted, setTimerStarted] = useState(false);
 
-    const onHandleTimeStarted = () => {
+    const handleTimeStarted = () => {
         setTimerStarted(true)
     }
 
     return (
         <div>
-            <TimeSelector handleStartTimer={onHandleTimeStarted}/>
+            <TimeSelector onHandleStartTimer={handleTimeStarted} />
         </div>
     )
 }
