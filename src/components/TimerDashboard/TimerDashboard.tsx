@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TimeSelector from "../timeSelector";
+import TimeSelector from "./timeSelector";
 
 function TimerDashboard() {
 
