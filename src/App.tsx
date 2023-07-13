@@ -1,12 +1,15 @@
 import React from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
+
 import './App.css';
-import TimerDashboard from './components/TimerDashboard';
+
+import Login from './components/Auth/Login';
 
 function App() {
   return (
-    <div>
-      <TimerDashboard />
-    </div>
+    <ChakraProvider>
+      <Login />
+    </ChakraProvider>
   );
 }
 
