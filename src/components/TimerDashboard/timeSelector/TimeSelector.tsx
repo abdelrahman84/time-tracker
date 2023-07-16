@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import styles from './TimeSelector.module.scss';
+import { Button, Checkbox, Container, FormControl, FormLabel, Input } from "@chakra-ui/react";
 
 interface TimeSelectorProps {
     onHandleStartTimer(): void;
@@ -44,39 +45,30 @@ function TimeSelector(props: TimeSelectorProps) {
     }
 
     return (
-        <div className={styles.timeSelector}>
-            <div className={styles.inputItem}>
-                <label>
-                    Input minutes:
-                </label>
-                <input type="number" onChange={handleMinutesChange} value={minutes} aria-label="minutes-input"></input>
+        <Container>
+            <div className={styles.timeSelector}>
+                <FormControl>
+                    <FormLabel>Input minutes</FormLabel>
+                    <Input type="number" onChange={handleMinutesChange} value={minutes} aria-label="minutes-input" />
+                </FormControl>
+
+                <FormControl>
+                    <FormLabel>Input seconds:</FormLabel>
+                    <Input type="number" onChange={handleSecondsChange} value={seconds} aria-label="seconds-input" />
+                </FormControl>
+
+                <Checkbox defaultChecked={isLoopEnabled} onChange={handleToggleLoop} aria-label="repeat-input">Repeat</Checkbox>
+
+                {isLoopEnabled && (
+                    <FormControl>
+                        <FormLabel>Loop for:</FormLabel>
+                        <Input type="number" onChange={handleLoopChange} value={loopCount} aria-label="loop-input" />
+                    </FormControl>
+                )}
+
+                <Button colorScheme="teal" onClick={handleStart} isDisabled={isButtonDisabled()} data-testid="start-btn">Start</Button>
             </div>
-
-            <div className={styles.inputItem}>
-                <label>
-                    Input seconds:
-                </label>
-                <input type="number" onChange={handleSecondsChange} value={seconds} aria-label="seconds-input"></input>
-            </div>
-
-            <div>
-                <label>
-                    Repeat:
-                </label>
-                <input type="checkbox" defaultChecked={isLoopEnabled} onChange={handleToggleLoop} aria-label="repeat-input"></input>
-            </div>
-
-            {isLoopEnabled && (
-                <div className={styles.inputItem}>
-                    <label>
-                        Loop for:
-                    </label>
-                    <input type="number" onChange={handleLoopChange} value={loopCount} aria-label="loop-input"></input>
-                </div>
-            )}
-
-            <button onClick={handleStart} disabled={isButtonDisabled()} data-testid="start-btn">Start</button>
-        </div>
+        </Container>
     )
 }
 
