@@ -1,23 +1,23 @@
-import { Button, Container, FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
+import { Button, FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
 
 import styles from './LoginForm.module.scss';
 
-interface Values {
+export interface Values {
     email: string;
 }
 
 
 interface LoginFormProps {
-    onHandleLogin(): void;
+    onHandleLogin(values: Values): void;
     onHandleGuest(): void;
 }
 
 function LoginForm(props: LoginFormProps) {
 
     async function handleSubmit(values: Values) {
-        // TBD add login handler
         formik.setSubmitting(false);
+        props.onHandleLogin(values)
     }
 
     const formik = useFormik({
@@ -31,7 +31,7 @@ function LoginForm(props: LoginFormProps) {
                 errors.email = 'Email is required';
                 return errors;
             }
-            
+
             if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
                 errors.email = 'Invalid email address'
             }
@@ -41,31 +41,29 @@ function LoginForm(props: LoginFormProps) {
     })
 
     return (
-        <div>
-            <Container className={styles.loginForm}>
-                <form
-                    onSubmit={formik.handleSubmit}
+        <div className={styles.LoginForm}>
+            <form
+                onSubmit={formik.handleSubmit}
+            >
+
+                <FormControl isInvalid={!!formik.errors.email && formik.touched.email}>
+                    <FormLabel>Email address</FormLabel>
+                    <Input id="emil" name="email" type="email" value={formik.values.email} placeholder="email" onChange={formik.handleChange} />
+                    <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+                </FormControl>
+
+                <Button
+                    colorScheme="green"
+                    variant='solid'
+                    isLoading={formik.isSubmitting}
+                    isDisabled={!formik.values.email || !!formik.errors.email}
+                    type='submit'
+                    data-testid="login-btn"
                 >
-
-                    <FormControl isInvalid={!!formik.errors.email && formik.touched.email}>
-                        <FormLabel>Email address</FormLabel>
-                        <Input id="emil" name="email" type="email" value={formik.values.email} placeholder="email" onChange={formik.handleChange} />
-                        <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
-                    </FormControl>
-
-                    <Button
-                        colorScheme="green"
-                        variant='solid'
-                        isLoading={formik.isSubmitting}
-                        isDisabled={!formik.values.email || !!formik.errors.email}
-                        type='submit'
-                        data-testid="login-btn"
-                    >
-                        Login
-                    </Button>
-                </form>
-                <Button colorScheme="teal" data-testid="guest-btn" onClick={props.onHandleGuest}>Continue as guest</Button>
-            </Container>
+                    Login
+                </Button>
+            </form>
+            <Button colorScheme="teal" data-testid="guest-btn" onClick={props.onHandleGuest}>Continue as guest</Button>
         </div>
     )
 }
