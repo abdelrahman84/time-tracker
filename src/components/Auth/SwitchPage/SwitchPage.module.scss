@@ -1,0 +1,19 @@
+.switchPage {
+    align-items: center;
+    padding: 0 !important;
+
+    .content {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 2rem;
+        padding: 1rem !important;
+    }
+
+    h1 {
+        font-weight: bold;
+    }
+
+    .link {
+        color: blue;
+    }
+}
