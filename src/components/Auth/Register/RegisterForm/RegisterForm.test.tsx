@@ -6,7 +6,7 @@ test('RegisterForm should render correctly', async () => {
     const handleRegister = jest.fn();
 
     render(
-        <RegisterForm onHandleRegister={handleRegister} />
+        <RegisterForm onHandleRegister={handleRegister} isDisabled={false} />
     )
 
     await act(() => {

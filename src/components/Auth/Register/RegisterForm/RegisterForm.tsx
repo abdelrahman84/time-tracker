@@ -12,6 +12,7 @@ export interface RegisterFormValues {
 
 interface RegisterFormProps {
     onHandleRegister(values: RegisterFormValues): void;
+    isDisabled: boolean;
 }
 
 function RegisterForm(props: RegisterFormProps) {
@@ -89,9 +90,10 @@ function RegisterForm(props: RegisterFormProps) {
                     <Button
                         colorScheme="green"
                         variant="solid"
-                        isLoading={formik.isSubmitting}
+                        isLoading={formik.isSubmitting || props.isDisabled}
                         type="submit"
                         data-testid="register-btn"
+                        isDisabled={props.isDisabled}
                     >
                         Register
                     </Button>
