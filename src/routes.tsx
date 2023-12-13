@@ -4,7 +4,8 @@ const routes = {
     },
     auth: {
         register: "/register",
-        login: "/login"
+        login: "/login",
+        verifyEmail: "/verify-email/:token"
     }
 }
 

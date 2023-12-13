@@ -7,7 +7,6 @@ export interface Values {
     email: string;
 }
 
-
 interface LoginFormProps {
     onHandleLogin(values: Values): void;
     onHandleGuest(): void;
@@ -48,7 +47,7 @@ function LoginForm(props: LoginFormProps) {
 
                 <FormControl isInvalid={!!formik.errors.email && formik.touched.email}>
                     <FormLabel>Email address</FormLabel>
-                    <Input id="emil" name="email" type="email" value={formik.values.email} placeholder="email" onChange={formik.handleChange} />
+                    <Input id="emil" aria-label="email" name="email" type="email" value={formik.values.email} placeholder="email" onChange={formik.handleChange} />
                     <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
                 </FormControl>
 

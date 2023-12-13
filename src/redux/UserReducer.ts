@@ -1,14 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { NavigateFunction } from 'react-router-dom';
 
 import { User } from '../types/user';
 import client from '../utils/client';
 import apiRoutes from '../apiRoutes';
 import { RegisterFormValues } from '../components/Auth/Register/RegisterForm/RegisterForm';
+import routes from '../routes';
 
 export const register = createAsyncThunk("user/register",
-    async (values: RegisterFormValues, thunkAPI) => {
+    async ({ values, navigate }: { values: RegisterFormValues, navigate: NavigateFunction }, thunkAPI) => {
         try {
             const response = await client.post(apiRoutes.user.register, { name: values.name, email: values.email, password: values.password });
+            // navigate to verify email page
+            navigate(routes.timerDashboard.main);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue("Failed to register")
@@ -18,13 +22,13 @@ export const register = createAsyncThunk("user/register",
 
 export interface UserInitialState {
     user: User,
-    loading: boolean,
+    loadingUser: boolean,
     error: string | null,
 }
 
 const initialState: UserInitialState = {
     user: { id: -1, name: '', email: '', email_verified: false, created_at: new Date().toISOString() },
-    loading: false, error: null
+    loadingUser: false, error: null
 }
 
 export const userSlice = createSlice({
@@ -33,15 +37,15 @@ export const userSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(register.pending, (state) => {
-            state.loading = true;
+            state.loadingUser = true;
             state.error = null;
         })
             .addCase(register.fulfilled, (state, action: any) => {
-                state.loading = false;
+                state.loadingUser = false;
                 state.user = action.payload;
             })
             .addCase(register.rejected, (state, action) => {
-                state.loading = false;
+                state.loadingUser = false;
                 state.error = action.error.message || 'Something went wrong';
             });
     }
