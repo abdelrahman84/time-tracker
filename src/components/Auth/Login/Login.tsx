@@ -20,6 +20,10 @@ function Login() {
                     search: `?email=${values.email}`,
                 });
             }
+
+            if (response.data.status === 3) {
+                navigate(routes.timerDashboard.main)
+            }
         })
     }
 

@@ -1,12 +1,12 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import TimeSelector from "./TimeSelector";
+import TimerCountdown from "./TimerCountdown";
 
-test('TimeSelector should render correctly', () => {
+test('TimerCountdown should render correctly', () => {
     const handleTimeStarted = jest.fn();
 
     render(
-        <TimeSelector onHandleStartTimer={handleTimeStarted} />
+        <TimerCountdown onHandleStartTimer={handleTimeStarted} />
     );
 
     const startButton = screen.getByTestId('start-btn');

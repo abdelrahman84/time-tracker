@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, AlertIcon, Button, Container, Spinner, Stack, useToast } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -92,6 +92,12 @@ function VerifyEmail() {
         sendVerificationEmail(email);
     }
 
+    function getLoginSwitch () {
+        return (
+            <SwitchPage className={styles.switchPage} title="Return to login" linkTitle="Login" linkUrl={routes.auth.login} />
+        )
+    }
+
     return (
         <Container className={styles.verifyEmail}>
             {loading && emailStatus === 0 && (
@@ -126,6 +132,7 @@ function VerifyEmail() {
                     >
                         Resend Verification Email
                     </Button>
+                    {getLoginSwitch()}
                 </div>
             )}
 
@@ -135,7 +142,7 @@ function VerifyEmail() {
                         <AlertIcon />
                         Email verified successfully
                     </Alert>
-                    <SwitchPage className={styles.switchPage} title="Return to login" linkTitle="Login" linkUrl={routes.auth.login} />
+                    {getLoginSwitch()}
                 </Stack>
             )}
         </Container>
