@@ -12,7 +12,7 @@ const initialState: TimerCountdownInitialState = {
     seconds: 0,
     minutes: 0,
     isLoopEnabled: false,
-    loopCount: 0
+    loopCount: 1
 }
 
 export const timerCountdownSlice = createSlice({
