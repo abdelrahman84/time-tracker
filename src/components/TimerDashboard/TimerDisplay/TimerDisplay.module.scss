@@ -3,3 +3,12 @@
         min-width: 100%;
     }
 }
+
+.countDownWidget {
+    display: flex;
+    margin: 1rem 0;
+
+    span: {
+        padding: 0 0.2rem;
+    }
+}

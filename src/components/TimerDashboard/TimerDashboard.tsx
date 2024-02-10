@@ -17,13 +17,14 @@ function TimerDashboard() {
     const seconds = useSelector((state: RootState) => state.timerCountdown.seconds);
     const minutes = useSelector((state: RootState) => state.timerCountdown.minutes);
     const loopCount = useSelector((state: RootState) => state.timerCountdown.loopCount);
-    const [timerStarted, setTimerStarted] = useState(false);
+    const isLoopEnabled = useSelector((state: RootState) => state.timerCountdown.isLoopEnabled);
+    const [timerEnabled, setTimerEnabled] = useState(false);
     const [selectedType, setSelectedType] = useState('');
 
     const dispatch: AppDispatch = useAppDispatch();
 
     const handleTimeStarted = () => {
-        setTimerStarted(true)
+        setTimerEnabled(true)
     }
 
     const handleSelectTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -46,6 +47,10 @@ function TimerDashboard() {
         dispatch(setLoopCount(loopCount))
     }
 
+    const handleTimerFinished = () => {
+        setTimerEnabled(false);
+    }
+
     return (
         <Container className={styles.timerDashboard}>
             {!selectedType && (
@@ -59,23 +64,28 @@ function TimerDashboard() {
             )}
 
 
-            {selectedType === COUNTDOWN && timerStarted === false &&
+            {selectedType === COUNTDOWN && timerEnabled === false &&
                 <TimerCountdown
                     onHandleStartTimer={handleTimeStarted}
                     onHandleSecondsChange={handleSecondsChange}
                     onHandleMinutesChange={handleMinutesChange}
                     setIsLoopEnabled={handleSetIsLoopEnabled}
                     setLoopCount={handleSetLoopCount}
+                    seconds={seconds}
+                    minutes={minutes}
+                    initialLoops={loopCount}
+                    isLoopEnabled={isLoopEnabled}
                 />
             }
 
 
-            {timerStarted &&
+            {timerEnabled &&
                 <TimerDisplay
                     type={selectedType}
                     seconds={seconds}
                     minutes={minutes}
                     initialLoops={loopCount}
+                    onHandleTimerFinished={handleTimerFinished}
                 />
             }
 

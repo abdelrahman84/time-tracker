@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Button, Checkbox, Container, FormControl, FormLabel, Input, Select } from "@chakra-ui/react";
 
 import styles from './TimerCountdown.module.scss';
@@ -9,6 +9,10 @@ interface TimerCountdownProps {
     onHandleMinutesChange(minutes: number): void;
     setIsLoopEnabled(checked: boolean): void;
     setLoopCount(loopCount: number): void;
+    seconds?: number;
+    minutes?: number;
+    initialLoops?: number;
+    isLoopEnabled?: boolean;
 }
 
 function TimerCountdown(props: TimerCountdownProps) {
@@ -16,6 +20,25 @@ function TimerCountdown(props: TimerCountdownProps) {
     const [minutes, setMinutes] = useState(0);
     const [isLoopEnabled, setIsLoopEnabled] = useState(false);
     const [loopCount, setLoopCount] = useState(0);
+
+    useEffect(() => {
+        if (props.seconds) {
+            setSeconds(props.seconds);
+        }
+
+        if (props.minutes) {
+            setMinutes(props.minutes);
+        }
+
+        if (props.isLoopEnabled) {
+            setIsLoopEnabled(props.isLoopEnabled);
+        }
+
+        if (props.initialLoops) {
+            setLoopCount(props.initialLoops);
+        }
+
+    }, []);
 
     const handleSecondsChange = (event: any) => {
         setSeconds(event.target.value);

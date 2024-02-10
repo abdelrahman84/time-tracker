@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
-import { Alert, AlertIcon, Button, Container, Stack } from "@chakra-ui/react";
+import { Alert, AlertIcon, Button, Container, Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack } from "@chakra-ui/react";
 
 import styles from './TimerDisplay.module.scss';
 
@@ -8,17 +8,74 @@ interface TimerDisplayProps {
     seconds: number;
     minutes: number;
     initialLoops?: number;
+    onHandleTimerFinished(): void;
 }
 
 function TimerDisplay(props: TimerDisplayProps) {
     const [isTimerOn, setIsTimerOn] = useState(false);
     const [remainingLoops, setRemainingLoops] = useState(1);
+    const [localMinutes, setLocalMinutes] = useState(0);
+    const [localSeconds, setLocalSeconds] = useState(60);
+    const [isTimerFinishedModalOpen, setIsTimerFinishedModalOpen] = useState(false);
 
     useEffect(() => {
         if (props.initialLoops) {
             setRemainingLoops(props.initialLoops);
         }
+
+        if (props.minutes) {
+            setLocalMinutes(props.minutes);
+        }
+
+        if (props.seconds) {
+            setLocalSeconds(props.seconds);
+        }
     }, []);
+
+    useEffect(() => {
+
+        const timer = setInterval(() => {
+            updateCurrentCountDown()
+        }, 1000);
+
+        return () => clearInterval(timer);
+
+    }, [isTimerOn, localMinutes, localSeconds]);
+
+    const updateCurrentCountDown = (): void => {
+        if (!isTimerOn) {
+            return;
+        }
+
+        let updatedSeconds = localSeconds - 1;
+
+        if (updatedSeconds < 0) {
+            if (localMinutes >= 1) {
+
+                let updatedMinutes = localMinutes - 1;
+                updatedSeconds = props.seconds;
+                setLocalMinutes(updatedMinutes);
+            }
+
+            if (localMinutes === 0) {
+                if (remainingLoops == 1) {
+                    setIsTimerOn(false);
+                    setIsTimerFinishedModalOpen(true);
+                    return;
+                }
+
+                if (remainingLoops > 1) {
+                    let updatedRemainingLoops = remainingLoops - 1;
+                    setRemainingLoops(updatedRemainingLoops);
+
+                    setLocalMinutes(props.minutes);
+                    updatedSeconds = props.seconds;
+                }
+            }
+        }
+
+        setLocalSeconds(updatedSeconds);
+    }
 
     const getTimerButtonLabel = (): string => {
         if (isTimerOn) {
@@ -45,9 +102,35 @@ function TimerDisplay(props: TimerDisplayProps) {
         )
     }
 
+    const getDisplayedCountDown = (displayType: number): ReactNode => {
+        const formattedDisplay = formatNumber(displayType);
+
+        return (
+            <h3>{formattedDisplay}</h3>
+        )
+    }
+
+    const formatNumber = (number: number): string => {
+        if (number >= 10) {
+            return number.toString();
+        }
+
+        return '0' + number.toString();
+    }
+
+    const handleCloseModal = (): void => {
+        setIsTimerFinishedModalOpen(!isTimerFinishedModalOpen);
+        props.onHandleTimerFinished();
+    }
+
     return (
         <Container>
             {getLoopInfo()}
+
+            <div className={styles.countDownWidget}>
+                {getDisplayedCountDown(localMinutes)} <span>:</span> {getDisplayedCountDown(localSeconds)}
+            </div>
+
             <Button
                 colorScheme="green"
                 variant="solid"
@@ -56,6 +139,21 @@ function TimerDisplay(props: TimerDisplayProps) {
             >
                 {getTimerButtonLabel()}
             </Button>
+
+            <Modal
+                isOpen={isTimerFinishedModalOpen}
+                onClose={handleCloseModal}
+                colorScheme="whiteAlpha"
+                size="xl"
+            >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>
+                        Timer countdown Finished
+                    </ModalHeader>
+                    <ModalCloseButton />
+                </ModalContent>
+            </Modal>
         </Container>
     )
 }
