@@ -6,16 +6,9 @@
 
 .countDownWidget {
     display: flex;
-    align-items: center;
-    justify-self: center;
     margin: 1rem 0;
 
-    h3 {
-        font-size: 10rem;
-    }
-
-    span {
-        font-size: 8rem;
+    span: {
         padding: 0 0.2rem;
     }
 }
