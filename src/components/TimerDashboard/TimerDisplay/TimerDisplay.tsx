@@ -1,7 +1,10 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Alert, AlertIcon, Button, Container, Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack } from "@chakra-ui/react";
+import useSound from "use-sound";
 
 import styles from './TimerDisplay.module.scss';
+import loopNotification from '../../../Sounds/simple-notification.mp3';
+import alarmFinished from '../../../Sounds/alarm-finished.mp3';
 
 interface TimerDisplayProps {
     type: string;
@@ -17,6 +20,8 @@ function TimerDisplay(props: TimerDisplayProps) {
     const [localMinutes, setLocalMinutes] = useState(0);
     const [localSeconds, setLocalSeconds] = useState(60);
     const [isTimerFinishedModalOpen, setIsTimerFinishedModalOpen] = useState(false);
+    const [playLoopSound] = useSound(loopNotification);
+    const [playAlarmFinished] = useSound(alarmFinished);
 
     useEffect(() => {
         if (props.initialLoops) {
@@ -59,6 +64,7 @@ function TimerDisplay(props: TimerDisplayProps) {
 
             if (localMinutes === 0) {
                 if (remainingLoops == 1) {
+                    playAlarmFinished();
                     setIsTimerOn(false);
                     setIsTimerFinishedModalOpen(true);
                     return;
@@ -67,6 +73,7 @@ function TimerDisplay(props: TimerDisplayProps) {
                 if (remainingLoops > 1) {
                     let updatedRemainingLoops = remainingLoops - 1;
                     setRemainingLoops(updatedRemainingLoops);
+                    playLoopSound();
 
                     setLocalMinutes(props.minutes);
                     updatedSeconds = props.seconds;
