@@ -51,6 +51,10 @@ function TimerDashboard() {
         setTimerEnabled(false);
     }
 
+    const handleTimerTypeChange = () => {
+        setSelectedType('');
+    }
+
     return (
         <Container className={styles.timerDashboard}>
             {!selectedType && (
@@ -75,6 +79,7 @@ function TimerDashboard() {
                     minutes={minutes}
                     initialLoops={loopCount}
                     isLoopEnabled={isLoopEnabled}
+                    onTimerTypeChange={handleTimerTypeChange}
                 />
             }
 

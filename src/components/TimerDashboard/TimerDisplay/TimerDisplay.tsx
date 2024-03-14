@@ -15,7 +15,7 @@ interface TimerDisplayProps {
 }
 
 function TimerDisplay(props: TimerDisplayProps) {
-    const [isTimerOn, setIsTimerOn] = useState(false);
+    const [isTimerOn, setIsTimerOn] = useState(true);
     const [remainingLoops, setRemainingLoops] = useState(1);
     const [localMinutes, setLocalMinutes] = useState(0);
     const [localSeconds, setLocalSeconds] = useState(60);

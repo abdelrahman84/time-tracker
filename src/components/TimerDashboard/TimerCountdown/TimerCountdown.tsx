@@ -9,6 +9,7 @@ interface TimerCountdownProps {
     onHandleMinutesChange(minutes: number): void;
     setIsLoopEnabled(checked: boolean): void;
     setLoopCount(loopCount: number): void;
+    onTimerTypeChange(): void;
     seconds?: number;
     minutes?: number;
     initialLoops?: number;
@@ -81,10 +82,19 @@ function TimerCountdown(props: TimerCountdownProps) {
         });
     }
 
+    const handleTimerTypeChange = (): void => {
+        props.onHandleSecondsChange(0);
+        props.onHandleMinutesChange(0);
+        props.setIsLoopEnabled(false);
+        props.setLoopCount(1);
+        props.onTimerTypeChange();
+    }
+
     return (
         <Container>
             <div className={styles.timerCountdown}>
                 <FormControl>
+                    <FormLabel>Seconds</FormLabel>
                     <Select
                         value={seconds}
                         onChange={handleSecondsChange}
@@ -96,6 +106,7 @@ function TimerCountdown(props: TimerCountdownProps) {
                 </FormControl>
 
                 <FormControl>
+                    <FormLabel>Minutes</FormLabel>
                     <Select
                         value={minutes}
                         onChange={handleMinutesChange}
@@ -115,6 +126,7 @@ function TimerCountdown(props: TimerCountdownProps) {
                 )}
 
                 <Button colorScheme="teal" onClick={handleStart} isDisabled={isButtonDisabled()} data-testid="start-btn">Start</Button>
+                <Button colorScheme="red" variant="solid" onClick={handleTimerTypeChange}>Change timer type</Button>
             </div>
         </Container>
     )

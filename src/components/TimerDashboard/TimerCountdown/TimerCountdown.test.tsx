@@ -8,6 +8,7 @@ test('TimerCountdown should render correctly', () => {
     const handleMinutesChange = jest.fn();
     const handleSetIsLoopEnabled = jest.fn();
     const handleSetLoopCount = jest.fn();
+    const handleTimerTypeChange = jest.fn();
 
     render(
         <TimerCountdown
@@ -16,6 +17,7 @@ test('TimerCountdown should render correctly', () => {
             onHandleMinutesChange={handleMinutesChange}
             setIsLoopEnabled={handleSetIsLoopEnabled}
             setLoopCount={handleSetLoopCount}
+            onTimerTypeChange={handleTimerTypeChange}
         />
     );
 
