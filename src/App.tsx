@@ -10,12 +10,14 @@ import routes from './routes';
 import Register from './components/Auth/Register';
 import VerifyEmail from './components/Auth/VerifyEmail';
 import theme from './theme';
+import ChangeColorModeSwitch from './components/Features/ChangeColorModeSwitch';
 
 function App() {
   return (
     <Provider store={store}>
       <Router>
         <ChakraProvider theme={theme}>
+          <ChangeColorModeSwitch />
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path={routes.auth.login} element={<Login />} />
