@@ -1,7 +1,21 @@
 .changeColorModeSwitch {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    position: fixed;
+    gap: 1rem;
     right: 3rem;
+    float: right;
+    padding: 0 1rem;
+    flex-direction: column;
+
+    @media screen and (min-width: 768px) {
+        flex-direction: row;
+    }
+
+    :global .chakra-switch__track {
+        transform: rotate(90deg);
+
+        @media screen and (min-width: 768px) {
+            transform: none;
+        }
+    }
 }

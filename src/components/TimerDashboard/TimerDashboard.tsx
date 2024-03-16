@@ -58,13 +58,15 @@ function TimerDashboard() {
     return (
         <Container className={styles.timerDashboard}>
             {!selectedType && (
-                <Select
-                    value={selectedType}
-                    onChange={handleSelectTypeChange}
-                    placeholder="Select type">
-                    <option value={COUNTDOWN}>countdown</option>
-                    <option value={STOPWATCH}>stopwatch</option>
-                </Select>
+                <div className={styles.changeTypeContainer}>
+                    <Select
+                        value={selectedType}
+                        onChange={handleSelectTypeChange}
+                        placeholder="Select type">
+                        <option value={COUNTDOWN}>countdown</option>
+                        <option value={STOPWATCH}>stopwatch</option>
+                    </Select>
+                </div>
             )}
 
 
