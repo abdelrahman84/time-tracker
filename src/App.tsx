@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import './App.scss';
@@ -11,6 +11,7 @@ import Register from './components/Auth/Register';
 import VerifyEmail from './components/Auth/VerifyEmail';
 import theme from './theme';
 import ChangeColorModeSwitch from './components/Features/ChangeColorModeSwitch';
+import GuardedRoute from './utils/guardedRoutes';
 
 function App() {
   return (
@@ -21,7 +22,12 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path={routes.auth.login} element={<Login />} />
-            <Route path={routes.timerDashboard.main} element={<TimerDashboard />} />
+            <Route path={routes.timerDashboard.main} element={
+              <GuardedRoute>
+                <TimerDashboard
+                />
+              </GuardedRoute>
+            } />
             <Route path={routes.auth.register} element={<Register />} />
             <Route path={routes.auth.verifyEmail} element={<VerifyEmail />} />
           </Routes>

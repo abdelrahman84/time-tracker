@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { NavigateFunction } from 'react-router-dom';
 
 import { User } from '../types/user';
@@ -11,7 +11,6 @@ export const register = createAsyncThunk("user/register",
     async ({ values, navigate }: { values: RegisterFormValues, navigate: NavigateFunction }, thunkAPI) => {
         try {
             const response = await client.post(apiRoutes.user.register, { name: values.name, email: values.email, password: values.password });
-            // navigate to verify email page
             navigate(routes.timerDashboard.main);
             return response.data;
         } catch (error) {
@@ -27,14 +26,21 @@ export interface UserInitialState {
 }
 
 const initialState: UserInitialState = {
-    user: { id: -1, name: '', email: '', email_verified: false, created_at: new Date().toISOString() },
+    user: {
+        id: -1, name: '', email: '', email_verified: false, created_at: new Date().toISOString(),
+        access_tokens: { access: '', refresh: '' }
+    },
     loadingUser: false, error: null
 }
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        setUser: (state: UserInitialState, action: PayloadAction<User>) => {
+            state.user = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(register.pending, (state) => {
             state.loadingUser = true;
@@ -43,6 +49,9 @@ export const userSlice = createSlice({
             .addCase(register.fulfilled, (state, action: any) => {
                 state.loadingUser = false;
                 state.user = action.payload;
+
+                localStorage.setItem('user', JSON.stringify(action.payload));
+
             })
             .addCase(register.rejected, (state, action) => {
                 state.loadingUser = false;
@@ -50,5 +59,7 @@ export const userSlice = createSlice({
             });
     }
 });
+
+export const { setUser } = userSlice.actions;
 
 export default userSlice.reducer
