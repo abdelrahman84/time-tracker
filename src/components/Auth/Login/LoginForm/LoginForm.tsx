@@ -9,7 +9,6 @@ export interface Values {
 
 interface LoginFormProps {
     onHandleLogin(values: Values): void;
-    onHandleGuest(): void;
 }
 
 function LoginForm(props: LoginFormProps) {
@@ -62,7 +61,6 @@ function LoginForm(props: LoginFormProps) {
                     Login
                 </Button>
             </form>
-            <Button colorScheme="teal" data-testid="guest-btn" onClick={props.onHandleGuest}>Continue as guest</Button>
         </div>
     )
 }
