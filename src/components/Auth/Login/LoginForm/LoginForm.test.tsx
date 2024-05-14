@@ -4,10 +4,9 @@ import LoginForm from "./LoginForm"
 
 test('Login should render correctly', async () => {
     const handleLogin = jest.fn();
-    const handleGuest = jest.fn();
 
     render(
-        <LoginForm onHandleLogin={handleLogin} onHandleGuest={handleGuest} />
+        <LoginForm onHandleLogin={handleLogin} />
     )
 
     const loginButton = screen.getByTestId('login-btn');
@@ -26,8 +25,4 @@ test('Login should render correctly', async () => {
         fireEvent.click(loginButton);
     })
     expect(handleLogin).toHaveBeenCalled();
-
-    const guestButton = screen.getByTestId('guest-btn');
-    fireEvent.click(guestButton);
-    expect(handleGuest).toHaveBeenCalled();
 })

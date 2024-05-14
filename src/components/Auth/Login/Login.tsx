@@ -34,7 +34,7 @@ function Login() {
                 });
             }
 
-            if (response.data.status === 3) {
+            if (response.data.status === 3 || response.data.status === 2) {
                 setEmail(values.email);
                 setShowPasswordForm(true);
             }

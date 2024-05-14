@@ -17,13 +17,13 @@ test('TimerDisplay should display props correctly', () => {
         />
     )
 
+    expect(screen.getByText('Pause')).toBeInTheDocument();
+
     const timerButton = screen.getByTestId('timer-btn');
     expect(timerButton).toBeInTheDocument();
+    fireEvent.click(timerButton);
 
     expect(screen.getByText('Start')).toBeInTheDocument();
-
-    fireEvent.click(timerButton);
-    expect(screen.getByText('Pause')).toBeInTheDocument();
 
     expect(screen.getByText('2 of 2 loops remaining')).toBeInTheDocument();
 

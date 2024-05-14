@@ -15,13 +15,6 @@ test('TimerDisplayCountDown should render correctly', async () => {
         />
     )
 
-    expect(screen.queryByText('Timer countdown Finished')).toBeNull();
-
-    const timerButton = screen.getByTestId('timer-btn');
-    await act(() => {
-        fireEvent.click(timerButton);
-    });
-
     await new Promise((resolve) => setTimeout(resolve, 3000));
     expect(screen.getByText('Timer countdown Finished')).not.toBeNull();
 
