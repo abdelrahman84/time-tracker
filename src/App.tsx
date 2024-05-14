@@ -12,6 +12,7 @@ import VerifyEmail from './components/Auth/VerifyEmail';
 import theme from './theme';
 import ChangeColorModeSwitch from './components/Features/ChangeColorModeSwitch';
 import GuardedRoute from './utils/guardedRoutes';
+import GuestRoute from './utils/guestRoutes';
 
 function App() {
   return (
@@ -20,15 +21,30 @@ function App() {
         <ChakraProvider theme={theme}>
           <ChangeColorModeSwitch />
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path={routes.auth.login} element={<Login />} />
+            <Route path="/" element={
+              <GuestRoute>
+                <Login />
+              </GuestRoute>
+            } />
+
+            <Route path={routes.auth.login} element={
+              <GuestRoute>
+                <Login />
+              </GuestRoute>
+            } />
+
+            <Route path={routes.auth.register} element={
+              <GuestRoute>
+                <Register />
+              </GuestRoute>
+            } />
+
             <Route path={routes.timerDashboard.main} element={
               <GuardedRoute>
                 <TimerDashboard
                 />
               </GuardedRoute>
             } />
-            <Route path={routes.auth.register} element={<Register />} />
             <Route path={routes.auth.verifyEmail} element={<VerifyEmail />} />
           </Routes>
         </ChakraProvider>

@@ -1,21 +1,21 @@
 import React from "react";
-
 import { Navigate } from "react-router-dom";
+
 import routes from "../routes";
 
-interface GuardedRouteProps {
+interface GuestRouteProps {
     children: JSX.Element
 }
 
-function GuardedRoute({ children }: GuardedRouteProps) {
+function GuestRoute({ children }: GuestRouteProps) {
     const isAuthenticated = React.useMemo(() => {
         const user = localStorage.getItem('user');
         return !!user;
     }, []);
 
     return (
-        isAuthenticated ? children : <Navigate to={routes.auth.login} />
+        isAuthenticated ? <Navigate to={routes.timerDashboard.main} /> : children
     )
 }
 
-export default GuardedRoute;
+export default GuestRoute;
