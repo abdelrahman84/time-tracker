@@ -2,18 +2,15 @@ import { useFormik } from "formik";
 import { Button, FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
 
 import styles from './LoginForm.module.scss';
-
-export interface Values {
-    email: string;
-}
+import { EmailValue } from "../Login";
 
 interface LoginFormProps {
-    onHandleLogin(values: Values): void;
+    onHandleLogin(values: EmailValue): void;
 }
 
 function LoginForm(props: LoginFormProps) {
 
-    async function handleSubmit(values: Values) {
+    async function handleSubmit(values: EmailValue) {
         formik.setSubmitting(false);
         props.onHandleLogin(values)
     }

@@ -9,6 +9,7 @@ export interface PasswordValues {
 
 interface PasswordFormProps {
     onHandlePassword(values: PasswordValues): void;
+    onHandleForgotPassword(): void;
 }
 
 function PasswordForm(props: PasswordFormProps) {
@@ -44,6 +45,14 @@ function PasswordForm(props: PasswordFormProps) {
                     <Input id="password" aria-label="password" name="password" type="password" value={formik.values.password} placeholder="password" onChange={formik.handleChange} />
                     <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
                 </FormControl>
+
+                <Button 
+                    colorScheme="blue"
+                    variant='link'
+                    onClick={props.onHandleForgotPassword}
+                    >
+                        Forgot password?
+                    </Button>
 
                 <Button
                     colorScheme="green"

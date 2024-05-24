@@ -12,5 +12,9 @@ export const AuthApi = {
 
     resendVerificationEmail: async function(email: string) {
         return client.post(apiRoutes.user.resendVerificationEmail, {email: email});
+    },
+
+    forgotPasswordEmail: async function(email: string) {
+        return client.post(apiRoutes.user.forgotPasswordEmail, {email: email});
     }
 }

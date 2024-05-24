@@ -4,18 +4,22 @@ import { Button, Card, Container, useToast } from "@chakra-ui/react";
 import styles from './Login.module.scss';
 import LoginForm from "./LoginForm";
 import routes from "../../../routes";
-import { Values } from "./LoginForm/LoginForm";
 import { AuthApi } from "../../../api/authApi";
 import SwitchPage from "../SwitchPage";
-import { useState } from "react";
+import React, { useState } from "react";
 import PasswordForm from "./PasswordForm";
 import { PasswordValues } from "./PasswordForm/PasswordForm";
 import { useAppDispatch } from "../../../redux";
 import { login } from "../../../redux/UserReducer";
+import ForgotPasswordForm from "./ForgotPasswordForm";
 
 export interface LoginValues {
     email: string;
     password: string;
+}
+
+export interface EmailValue {
+    email: string;
 }
 
 function Login() {
@@ -24,8 +28,10 @@ function Login() {
     const dispatch = useAppDispatch();
     const [email, setEmail] = useState('');
     const [showPasswordForm, setShowPasswordForm] = useState(false);
+    const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(false);
+    const [isSendingForgotPassword, setIsSendingForgotPassword] = useState(false)
 
-    const handleLogin = async (values: Values): Promise<void> => {
+    const handleLogin = async (values: EmailValue): Promise<void> => {
         await AuthApi.checkEmailBeforeLogin(values.email).then(response => {
             if (response.data.status === 1) {
                 navigate({
@@ -64,11 +70,47 @@ function Login() {
         navigate(routes.timerDashboard.main)
     }
 
+    const handleForgotPassword = (): void => {
+        setShowForgotPasswordForm(true);
+        setShowPasswordForm(false);
+    }
+
+    const handleForgotPasswordSubmit = async (): Promise<void> => {
+        setIsSendingForgotPassword(true);
+
+        await AuthApi.forgotPasswordEmail(email).then(response => {
+            toast({
+                title: 'Success',
+                description: 'If the email exists, a reset password link will be sent to your email',
+                status: 'success',
+                duration: 3000,
+                position: 'bottom-right',
+            })
+        }).finally(() => {
+            setIsSendingForgotPassword(false);
+        })
+    }
+
+    const cardContent = (): React.ReactNode => {
+        if (showPasswordForm) {
+            return <PasswordForm onHandlePassword={handlePasswordSubmit} onHandleForgotPassword={handleForgotPassword} />
+        }
+
+        if (showForgotPasswordForm) {
+            return <ForgotPasswordForm
+                inputEmail={email}
+                isDisabled={isSendingForgotPassword}
+                onHandleForgotSubmit={handleForgotPasswordSubmit}
+            />
+        }
+
+        return <LoginForm onHandleLogin={handleLogin} />
+    }
+
     return (
         <Container className={styles.login}>
             <Card>
-                {!showPasswordForm && (<LoginForm onHandleLogin={handleLogin} />)}
-                {showPasswordForm && (<PasswordForm onHandlePassword={handlePasswordSubmit} />)}
+                {cardContent()}
                 <Button colorScheme="teal" data-testid="guest-btn" onClick={handleGuest}>Continue as guest</Button>
             </Card>
 

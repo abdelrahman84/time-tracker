@@ -5,6 +5,7 @@ const apiRoutes = {
         login: "/login",
         verifyToken: "/verify_token",
         resendVerificationEmail: "/resend_verification_email",
+        forgotPasswordEmail: "/forgot_password",
     }
 }
 

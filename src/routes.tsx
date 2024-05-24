@@ -5,6 +5,7 @@ const routes = {
     auth: {
         register: "/register",
         login: "/login",
+        forgotPassword: "/forgot-password",
         verifyEmail: "/verify-email/:token"
     }
 }
