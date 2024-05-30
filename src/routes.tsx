@@ -6,7 +6,8 @@ const routes = {
         register: "/register",
         login: "/login",
         forgotPassword: "/forgot-password",
-        verifyEmail: "/verify-email/:token"
+        verifyEmail: "/verify-email/:token",
+        resetPassword: "/reset-password/:token"
     }
 }
 

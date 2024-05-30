@@ -13,6 +13,7 @@ import theme from './theme';
 import ChangeColorModeSwitch from './components/Features/ChangeColorModeSwitch';
 import GuardedRoute from './utils/guardedRoutes';
 import GuestRoute from './utils/guestRoutes';
+import ResetPassword from './components/Auth/ResetPassword';
 
 function App() {
   return (
@@ -45,7 +46,9 @@ function App() {
                 />
               </GuardedRoute>
             } />
+
             <Route path={routes.auth.verifyEmail} element={<VerifyEmail />} />
+            <Route path={routes.auth.resetPassword} element={<ResetPassword />} />
           </Routes>
         </ChakraProvider>
       </Router>
