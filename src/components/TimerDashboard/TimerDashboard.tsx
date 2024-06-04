@@ -8,6 +8,7 @@ import TimerDisplay from "./TimerDisplay";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState, useAppDispatch } from "../../redux";
 import { setIsLoopEnabled, setLoopCount, setMinutes, setSeconds } from "../../redux/TimerCountdownReducer";
+import TimerStopWatch from "./TimerStopWatch";
 
 export const COUNTDOWN = 'countdown';
 export const STOPWATCH = 'stopwatch';
@@ -84,6 +85,10 @@ function TimerDashboard() {
                     onTimerTypeChange={handleTimerTypeChange}
                 />
             }
+
+            {selectedType === STOPWATCH && timerEnabled === false &&
+                <TimerStopWatch
+                />}
 
 
             {timerEnabled &&

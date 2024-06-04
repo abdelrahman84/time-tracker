@@ -5,6 +5,7 @@ import useSound from "use-sound";
 import styles from './TimerDisplay.module.scss';
 import loopNotification from '../../../Sounds/simple-notification.mp3';
 import alarmFinished from '../../../Sounds/alarm-finished.mp3';
+import TimerWidget from "../../reusables/TimerWidget";
 
 interface TimerDisplayProps {
     type: string;
@@ -112,22 +113,6 @@ function TimerDisplay(props: TimerDisplayProps) {
         )
     }
 
-    const getDisplayedCountDown = (displayType: number): ReactNode => {
-        const formattedDisplay = formatNumber(displayType);
-
-        return (
-            <h3>{formattedDisplay}</h3>
-        )
-    }
-
-    const formatNumber = (number: number): string => {
-        if (number >= 10) {
-            return number.toString();
-        }
-
-        return '0' + number.toString();
-    }
-
     const handleCloseModal = (): void => {
         setIsTimerFinishedModalOpen(!isTimerFinishedModalOpen);
         props.onHandleTimerFinished();
@@ -147,26 +132,29 @@ function TimerDisplay(props: TimerDisplayProps) {
         <Container>
             {getLoopInfo()}
 
-            <div className={styles.countDownWidget}>
-                {getDisplayedCountDown(localMinutes)} <span>:</span> {getDisplayedCountDown(localSeconds)}
+            <div className={styles.timerDisplay}>
+                <TimerWidget
+                    seconds={localSeconds}
+                    minutes={localMinutes}
+                />
+
+                <Button
+                    colorScheme="green"
+                    variant="solid"
+                    data-testid="timer-btn"
+                    onClick={handleOnTimerClick}
+                >
+                    {getTimerButtonLabel()}
+                </Button>
+
+                <Button
+                    colorScheme="red"
+                    variant="solid"
+                    onClick={handleToggleResetAlert}
+                >
+                    Reset
+                </Button>
             </div>
-
-            <Button
-                colorScheme="green"
-                variant="solid"
-                data-testid="timer-btn"
-                onClick={handleOnTimerClick}
-            >
-                {getTimerButtonLabel()}
-            </Button>
-
-            <Button
-                colorScheme="red"
-                variant="solid"
-                onClick={handleToggleResetAlert}
-            >
-                Reset
-            </Button>
 
             <Modal
                 isOpen={isTimerFinishedModalOpen}
