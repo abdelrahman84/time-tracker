@@ -1,4 +1,4 @@
-import { Button, Card, Container, FormControl, FormErrorMessage, FormLabel, Input, Toast, position, useToast } from "@chakra-ui/react";
+import { Alert, AlertIcon, Button, Card, Container, FormControl, FormErrorMessage, FormLabel, Input, Stack, Toast, position, useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useParams } from "react-router-dom";
 
@@ -6,6 +6,7 @@ import styles from './ResetPassword.module.scss';
 import SwitchPage from "../SwitchPage";
 import routes from "../../../routes";
 import { AuthApi } from "../../../api/authApi";
+import { useState } from "react";
 
 interface ResetPasswordValues {
     password: string;
@@ -16,19 +17,14 @@ interface ResetPasswordValues {
 function ResetPassword() {
     const toast = useToast();
     const { token } = useParams();
+    const [isPasswordReset, setIsPasswordReset] = useState(false);
 
     async function handleSubmit(values: ResetPasswordValues) {
         formik.setSubmitting(true);
 
         await AuthApi.resetPassword(values).then(response => {
             if (response.data.status === 1) {
-                toast({
-                    title: 'Success',
-                    description: 'Password reset successfully',
-                    status: 'success',
-                    duration: 3000,
-                    position: 'bottom-right'
-                })
+                setIsPasswordReset(true);
             }
 
             if (response.data.status === 2) {
@@ -79,36 +75,47 @@ function ResetPassword() {
 
     return (
         <Container className={styles.resetPassword}>
-            <Card>
-                <form
-                    onSubmit={formik.handleSubmit}
-                >
-                    <FormControl isInvalid={!!formik.errors.password && formik.touched.password}>
-                        <FormLabel>Password</FormLabel>
-                        <Input id="password" name="password" type="password" value={formik.values.password} placeholder="password" onChange={formik.handleChange} />
-                        <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl isInvalid={!!formik.errors.confirm_password && formik.touched.confirm_password}>
-                        <FormLabel>Confirm Password</FormLabel>
-                        <Input id="confirm_password" name="confirm_password" type="password" value={formik.values.confirm_password} placeholder="confirm password" onChange={formik.handleChange} />
-                        <FormErrorMessage>{formik.errors.confirm_password}</FormErrorMessage>
-                    </FormControl>
-
-                    <Button
-                        colorScheme="green"
-                        variant='solid'
-                        isLoading={formik.isSubmitting}
-                        isDisabled={formik.isSubmitting}
-                        type='submit'
-                        data-testid="reset-password-btn"
+            {!isPasswordReset && (
+                <Card>
+                    <form
+                        onSubmit={formik.handleSubmit}
                     >
-                        Reset Password
-                    </Button>
+                        <FormControl isInvalid={!!formik.errors.password && formik.touched.password}>
+                            <FormLabel>Password</FormLabel>
+                            <Input id="password" name="password" type="password" value={formik.values.password} placeholder="password" onChange={formik.handleChange} />
+                            <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+                        </FormControl>
+
+                        <FormControl isInvalid={!!formik.errors.confirm_password && formik.touched.confirm_password}>
+                            <FormLabel>Confirm Password</FormLabel>
+                            <Input id="confirm_password" name="confirm_password" type="password" value={formik.values.confirm_password} placeholder="confirm password" onChange={formik.handleChange} />
+                            <FormErrorMessage>{formik.errors.confirm_password}</FormErrorMessage>
+                        </FormControl>
+
+                        <Button
+                            colorScheme="green"
+                            variant='solid'
+                            isLoading={formik.isSubmitting}
+                            isDisabled={formik.isSubmitting}
+                            type='submit'
+                            data-testid="reset-password-btn"
+                        >
+                            Reset Password
+                        </Button>
 
 
-                </form>
-            </Card>
+                    </form>
+                </Card>
+            )}
+
+            {isPasswordReset && (
+                <Stack spacing={3}>
+                    <Alert status="success" variant='solid'>
+                        <AlertIcon />
+                        Password reset successful. Please login with your new password
+                    </Alert>
+                </Stack>
+            )}
 
             <SwitchPage className={styles.switchPage} title="Return to login" linkTitle="Login" linkUrl={routes.auth.login} />
 
