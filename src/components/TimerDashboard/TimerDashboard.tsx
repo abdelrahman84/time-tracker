@@ -88,6 +88,7 @@ function TimerDashboard() {
 
             {selectedType === STOPWATCH && timerEnabled === false &&
                 <TimerStopWatch
+                    onTimerTypeChange={handleTimerTypeChange}
                 />}
 
 

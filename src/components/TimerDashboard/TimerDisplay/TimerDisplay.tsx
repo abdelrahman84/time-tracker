@@ -6,6 +6,7 @@ import styles from './TimerDisplay.module.scss';
 import loopNotification from '../../../Sounds/simple-notification.mp3';
 import alarmFinished from '../../../Sounds/alarm-finished.mp3';
 import TimerWidget from "../../reusables/TimerWidget";
+import BackButton from "../../reusables/BackButton";
 
 interface TimerDisplayProps {
     type: string;
@@ -128,6 +129,11 @@ function TimerDisplay(props: TimerDisplayProps) {
         props.onHandleTimerFinished();
     }
 
+    const handleTimerTypeChange = (): void => {
+        setIsTimerOn(false);
+        props.onHandleTimerFinished();
+    }
+
     return (
         <Container>
             {getLoopInfo()}
@@ -197,6 +203,10 @@ function TimerDisplay(props: TimerDisplayProps) {
                     </AlertDialogContent>
                 </AlertDialogOverlay>
             </AlertDialog>
+
+            <div className={styles.backButtonContainer}>
+                <BackButton onHandleBack={handleTimerTypeChange} />
+            </div>
 
         </Container>
     )

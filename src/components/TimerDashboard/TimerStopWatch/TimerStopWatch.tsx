@@ -3,8 +3,13 @@ import { useEffect, useState } from "react";
 import TimerWidget from "../../reusables/TimerWidget";
 
 import styles from './TimerStopWatch.module.scss';
+import BackButton from "../../reusables/BackButton";
 
-function TimerStopWatch() {
+interface TimerStopWatchProps {
+    onTimerTypeChange(): void;
+}
+
+function TimerStopWatch(props: TimerStopWatchProps) {
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [isTimerOn, setIsTimerOn] = useState(false);
@@ -43,6 +48,11 @@ function TimerStopWatch() {
         setIsTimerOn(false);
     }
 
+    const handleBack = () => {
+        handleReset();
+        props.onTimerTypeChange();
+    }
+
     return (
         <Container className={styles.timerStopWatch}>
             <div>
@@ -65,6 +75,9 @@ function TimerStopWatch() {
                 Reset
             </Button>
 
+            <div className={styles.backButtonContainer}>
+                <BackButton onHandleBack={handleBack} />
+            </div>
         </Container>
     )
 }
