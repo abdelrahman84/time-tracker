@@ -9,8 +9,8 @@ import SwitchPage from "../SwitchPage";
 import React, { useState } from "react";
 import PasswordForm from "./PasswordForm";
 import { PasswordValues } from "./PasswordForm/PasswordForm";
-import { useAppDispatch } from "../../../redux";
-import { login } from "../../../redux/UserReducer";
+import { useAppDispatch } from "state";
+import { login } from "state/UserReducer";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 
 export interface LoginValues {

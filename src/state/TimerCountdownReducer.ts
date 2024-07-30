@@ -1,6 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-
 export interface TimerCountdownInitialState {
     seconds: number;
     minutes: number;

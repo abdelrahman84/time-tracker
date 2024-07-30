@@ -6,8 +6,8 @@ import TimerCountdown from "./TimerCountdown";
 import styles from './TimerDashboard.module.scss';
 import TimerDisplay from "./TimerDisplay";
 import { useSelector } from "react-redux";
-import { AppDispatch, RootState, useAppDispatch } from "../../redux";
-import { setIsLoopEnabled, setLoopCount, setMinutes, setSeconds } from "../../redux/TimerCountdownReducer";
+import { AppDispatch, RootState, useAppDispatch } from "state";
+import { setIsLoopEnabled, setLoopCount, setMinutes, setSeconds } from "state/TimerCountdownReducer";
 import TimerStopWatch from "./TimerStopWatch";
 
 export const COUNTDOWN = 'countdown';

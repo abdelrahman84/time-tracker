@@ -6,7 +6,7 @@ import styles from './TimerDisplay.module.scss';
 import loopNotification from '../../../Sounds/simple-notification.mp3';
 import alarmFinished from '../../../Sounds/alarm-finished.mp3';
 import TimerWidget from "../../reusables/TimerWidget";
-import BackButton from "../../reusables/BackButton";
+import BackButton from "components/reusables/BackButton"
 
 interface TimerDisplayProps {
     type: string;

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import './App.scss';
 import TimerDashboard from './components/TimerDashboard';
 import Login from './components/Auth/Login';
-import { store } from './redux';
+import { store } from './state';
 import routes from './routes';
 import Register from './components/Auth/Register';
 import VerifyEmail from './components/Auth/VerifyEmail';

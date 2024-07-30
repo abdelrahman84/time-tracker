@@ -5,8 +5,8 @@ import RegisterForm from "./RegisterForm";
 import { RegisterFormValues } from "./RegisterForm/RegisterForm";
 import SwitchPage from "../SwitchPage";
 import routes from "../../../routes";
-import { AppDispatch, RootState, useAppDispatch } from "../../../redux";
-import { register } from "../../../redux/UserReducer";
+import { AppDispatch, RootState, useAppDispatch } from "state";
+import { register } from "state/UserReducer";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
