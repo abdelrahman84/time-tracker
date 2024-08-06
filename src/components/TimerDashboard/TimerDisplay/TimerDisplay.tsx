@@ -8,11 +8,16 @@ import alarmFinished from '../../../Sounds/alarm-finished.mp3';
 import TimerWidget from "../../reusables/TimerWidget";
 import BackButton from "components/reusables/BackButton"
 
+const SECONDS = 60;
+
 interface TimerDisplayProps {
     type: string;
     seconds: number;
     minutes: number;
     initialLoops?: number;
+    remainingSeconds?: number;
+    remainingMinutes?: number;
+    remainingLoops?: number;
     onHandleTimerFinished(): void;
 }
 
@@ -29,21 +34,12 @@ function TimerDisplay(props: TimerDisplayProps) {
     const cancelResetModalRef = React.useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
-        if (props.initialLoops) {
-            setRemainingLoops(props.initialLoops);
-        }
-
-        if (props.minutes) {
-            setLocalMinutes(props.minutes);
-        }
-
-        if (props.seconds) {
-            setLocalSeconds(props.seconds);
-        }
+        setRemainingLoops(props.remainingLoops);
+        setLocalMinutes(props.remainingMinutes);
+        setLocalSeconds(props.remainingSeconds);
     }, []);
 
     useEffect(() => {
-
         const timer = setInterval(() => {
             updateCurrentCountDown()
         }, 1000);
@@ -63,7 +59,7 @@ function TimerDisplay(props: TimerDisplayProps) {
             if (localMinutes >= 1) {
 
                 let updatedMinutes = localMinutes - 1;
-                updatedSeconds = props.seconds;
+                updatedSeconds = SECONDS;
                 setLocalMinutes(updatedMinutes);
             }
 
@@ -87,6 +83,8 @@ function TimerDisplay(props: TimerDisplayProps) {
         }
 
         setLocalSeconds(updatedSeconds);
+
+        updateCurrentTimerSnapShot();
     }
 
     const getTimerButtonLabel = (): string => {
@@ -134,6 +132,16 @@ function TimerDisplay(props: TimerDisplayProps) {
         props.onHandleTimerFinished();
     }
 
+    const updateCurrentTimerSnapShot = (): void => {
+        const timer = JSON.parse(localStorage.getItem('timer') || '{}');
+        localStorage.setItem('timer', JSON.stringify({
+            ...timer,
+            remainingSeconds: localSeconds,
+            remainingMinutes: localMinutes,
+            remainingLoops
+        }));
+    }
+
     return (
         <Container>
             {getLoopInfo()}
@@ -171,7 +179,7 @@ function TimerDisplay(props: TimerDisplayProps) {
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>
-                        Timer countdown Finished
+                        Previous Timer detected
                     </ModalHeader>
                     <ModalCloseButton />
                 </ModalContent>
