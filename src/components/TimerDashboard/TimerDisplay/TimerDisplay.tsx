@@ -8,7 +8,7 @@ import alarmFinished from '../../../Sounds/alarm-finished.mp3';
 import TimerWidget from "../../reusables/TimerWidget";
 import BackButton from "components/reusables/BackButton"
 
-const SECONDS = 60;
+const SECONDS = 59;
 
 interface TimerDisplayProps {
     type: string;
@@ -25,7 +25,7 @@ function TimerDisplay(props: TimerDisplayProps) {
     const [isTimerOn, setIsTimerOn] = useState(true);
     const [remainingLoops, setRemainingLoops] = useState(1);
     const [localMinutes, setLocalMinutes] = useState(0);
-    const [localSeconds, setLocalSeconds] = useState(60);
+    const [localSeconds, setLocalSeconds] = useState(59);
     const [isTimerFinishedModalOpen, setIsTimerFinishedModalOpen] = useState(false);
     const [isResetModalOpen, setIsResetModalOpen] = useState(false);
     const [playLoopSound] = useSound(loopNotification);

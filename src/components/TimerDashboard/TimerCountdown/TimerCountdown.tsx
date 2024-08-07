@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
-import { Button, Checkbox, Container, FormControl, FormLabel, Input, Select } from "@chakra-ui/react";
+import { Button, Checkbox, Container, FormControl, FormErrorMessage, FormLabel, Input, Select } from "@chakra-ui/react";
 
 import styles from './TimerCountdown.module.scss';
 
@@ -20,7 +20,7 @@ function TimerCountdown(props: TimerCountdownProps) {
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [isLoopEnabled, setIsLoopEnabled] = useState(false);
-    const [loopCount, setLoopCount] = useState(0);
+    const [loopCount, setLoopCount] = useState(1);
 
     useEffect(() => {
         if (props.seconds) {
@@ -64,6 +64,10 @@ function TimerCountdown(props: TimerCountdownProps) {
     }
 
     const handleStart = (): void => {
+        if (isLoopEnabled && loopCount <= 0) {
+            return;
+        }
+
         props.onHandleStartTimer();
     }
 
@@ -119,9 +123,10 @@ function TimerCountdown(props: TimerCountdownProps) {
                 <Checkbox defaultChecked={isLoopEnabled} onChange={handleToggleLoop} aria-label="repeat-checkbox">Repeat</Checkbox>
 
                 {isLoopEnabled && (
-                    <FormControl>
+                    <FormControl isInvalid={loopCount <= 0}>
                         <FormLabel>Loop for:</FormLabel>
                         <Input type="number" onChange={handleLoopChange} value={loopCount} aria-label="loop-input" />
+                        <FormErrorMessage>Loop count must be greater than 0</FormErrorMessage>
                     </FormControl>
                 )}
 
