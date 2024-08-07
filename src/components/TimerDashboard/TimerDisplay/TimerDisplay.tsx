@@ -179,7 +179,7 @@ function TimerDisplay(props: TimerDisplayProps) {
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>
-                        Previous Timer detected
+                        Previous countdown finished
                     </ModalHeader>
                     <ModalCloseButton />
                 </ModalContent>
