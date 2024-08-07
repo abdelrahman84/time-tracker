@@ -6,7 +6,6 @@ import styles from './TimerDisplay.module.scss';
 import loopNotification from '../../../Sounds/simple-notification.mp3';
 import alarmFinished from '../../../Sounds/alarm-finished.mp3';
 import TimerWidget from "../../reusables/TimerWidget";
-import BackButton from "components/reusables/BackButton"
 
 const SECONDS = 59;
 
@@ -168,6 +167,14 @@ function TimerDisplay(props: TimerDisplayProps) {
                 >
                     Reset
                 </Button>
+
+                <Button
+                    colorScheme="yellow"
+                    variant="solid"
+                    onClick={handleTimerTypeChange}
+                >
+                    Change timer type
+                </Button>
             </div>
 
             <Modal
@@ -179,7 +186,7 @@ function TimerDisplay(props: TimerDisplayProps) {
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>
-                        Previous countdown finished
+                        Timer countdown finished
                     </ModalHeader>
                     <ModalCloseButton />
                 </ModalContent>
@@ -211,10 +218,6 @@ function TimerDisplay(props: TimerDisplayProps) {
                     </AlertDialogContent>
                 </AlertDialogOverlay>
             </AlertDialog>
-
-            <div className={styles.backButtonContainer}>
-                <BackButton onHandleBack={handleTimerTypeChange} />
-            </div>
 
         </Container>
     )
