@@ -1,6 +1,5 @@
 import { useFormik } from "formik";
 
-import styles from './PasswordForm.module.scss';
 import { Button, FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
 
 export interface PasswordValues {
@@ -36,7 +35,7 @@ function PasswordForm(props: PasswordFormProps) {
     });
 
     return (
-        <div className={styles.PasswordForm}>
+        <div>
             <form
                 onSubmit={formik.handleSubmit}
             >
@@ -46,13 +45,13 @@ function PasswordForm(props: PasswordFormProps) {
                     <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
                 </FormControl>
 
-                <Button 
+                <Button
                     colorScheme="blue"
                     variant='link'
                     onClick={props.onHandleForgotPassword}
-                    >
-                        Forgot password?
-                    </Button>
+                >
+                    Forgot password?
+                </Button>
 
                 <Button
                     colorScheme="green"
