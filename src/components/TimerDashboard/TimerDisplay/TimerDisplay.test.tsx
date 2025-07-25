@@ -11,6 +11,7 @@ test('TimerDisplay should display props correctly', () => {
         <TimerDisplay
             seconds={1}
             minutes={2}
+            hours={0}
             type={COUNTDOWN}
             initialLoops={2}
             onHandleTimerFinished={handleTimerFinished}

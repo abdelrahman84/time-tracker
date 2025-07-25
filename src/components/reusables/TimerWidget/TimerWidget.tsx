@@ -5,6 +5,7 @@ import styles from './TimerWidget.module.scss';
 interface TimerWidgetProps {
     seconds: number;
     minutes: number;
+    hours: number;
 }
 
 function TimerWidget(props: TimerWidgetProps) {
@@ -27,7 +28,7 @@ function TimerWidget(props: TimerWidgetProps) {
 
     return (
         <div className={styles.timerWidget}>
-            {getDisplayedCountDown(props.minutes)} <span>:</span> {getDisplayedCountDown(props.seconds)}
+            {getDisplayedCountDown(props.hours)} <span>:</span> {getDisplayedCountDown(props.minutes)} <span>:</span> {getDisplayedCountDown(props.seconds)}
         </div>
     )
 }

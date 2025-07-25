@@ -7,8 +7,9 @@ import styles from './TimerDashboard.module.scss';
 import TimerDisplay from "./TimerDisplay";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState, useAppDispatch } from "state";
-import { setIsLoopEnabled, setLoopCount, setMinutes, setSeconds } from "state/TimerCountdownReducer";
+import { setHours, setIsLoopEnabled, setLoopCount, setMinutes, setSeconds } from "state/TimerCountdownReducer";
 import TimerStopWatch from "./TimerStopWatch";
+import { DEFAULT_MINUTES } from "./TimerDisplay/TimerDisplay";
 
 export const COUNTDOWN = 'countdown';
 export const STOPWATCH = 'stopwatch';
@@ -17,10 +18,12 @@ export const STOPWATCH = 'stopwatch';
 function TimerDashboard() {
     const seconds = useSelector((state: RootState) => state.timerCountdown.seconds);
     const minutes = useSelector((state: RootState) => state.timerCountdown.minutes);
+    const hours = useSelector((state: RootState) => state.timerCountdown.hours);
     const loopCount = useSelector((state: RootState) => state.timerCountdown.loopCount);
     const isLoopEnabled = useSelector((state: RootState) => state.timerCountdown.isLoopEnabled);
     const [remainingLoops, setRemainingLoops] = useState(0);
     const [remainingMinutes, setRemainingMinutes] = useState(0);
+    const [remainingHours, setRemainingHours] = useState(0);
     const [remainingSeconds, setRemainingSeconds] = useState(0);
     const [timerEnabled, setTimerEnabled] = useState(false);
     const [selectedType, setSelectedType] = useState('');
@@ -39,11 +42,26 @@ function TimerDashboard() {
         setTimerEnabled(true)
 
         const remainingLoops = loopCount;
-        const remainingMinutes = minutes
-        const remainingSeconds = seconds;
+        let remainingHours = hours;
+        let remainingMinutes = minutes ?? 0;
+        const remainingSeconds = seconds ?? 0;
+
+        if (hours >= 1 && (minutes <= 0 && seconds <= 0)) {
+            dispatch(setMinutes(DEFAULT_MINUTES));
+            remainingMinutes = DEFAULT_MINUTES;
+        }
+
+        if (hours == 1 && minutes <= 0 && seconds <= 0) {
+            remainingHours = 0;
+        }
+
+        if (minutes >= 1 && seconds <= 0) {
+            remainingMinutes = remainingMinutes - 1;
+        }
 
         setRemainingLoops(remainingLoops);
         setRemainingMinutes(remainingMinutes);
+        setRemainingHours(remainingHours);
         setRemainingSeconds(remainingSeconds);
 
         localStorage.setItem('timer', JSON.stringify({
@@ -51,6 +69,7 @@ function TimerDashboard() {
             minutes,
             remainingSeconds,
             remainingMinutes,
+            remainingHours,
             loopCount,
             remainingLoops,
             isLoopEnabled
@@ -69,6 +88,10 @@ function TimerDashboard() {
         dispatch(setMinutes(minutes));
     }
 
+    const handleHoursChange = (hours: number) => {
+        dispatch(setHours(hours));
+    }
+
     const handleSetIsLoopEnabled = ($status: boolean) => {
         dispatch(setIsLoopEnabled($status));
     }
@@ -80,6 +103,15 @@ function TimerDashboard() {
     const handleTimerFinished = () => {
         setTimerEnabled(false);
         localStorage.removeItem('timer');
+        setRemainingLoops(0);
+        setRemainingMinutes(0);
+        setRemainingHours(0);
+        setRemainingSeconds(0);
+
+        dispatch(setSeconds(0));
+        dispatch(setMinutes(0));
+        dispatch(setHours(0));
+        dispatch(setLoopCount(1));
     }
 
     const handleTimerTypeChange = () => {
@@ -115,6 +147,7 @@ function TimerDashboard() {
 
         setRemainingSeconds(timer.remainingSeconds);
         setRemainingMinutes(timer.remainingMinutes);
+        setRemainingHours(timer.remainingHours);
         setRemainingLoops(timer.remainingLoops);
         setSelectedType(COUNTDOWN);
         setTimerEnabled(true);
@@ -148,10 +181,12 @@ function TimerDashboard() {
                     onHandleStartTimer={handleTimeStarted}
                     onHandleSecondsChange={handleSecondsChange}
                     onHandleMinutesChange={handleMinutesChange}
+                    onHandleHoursChange={handleHoursChange}
                     setIsLoopEnabled={handleSetIsLoopEnabled}
                     setLoopCount={handleSetLoopCount}
                     seconds={seconds}
                     minutes={minutes}
+                    hours={hours}
                     initialLoops={loopCount}
                     isLoopEnabled={isLoopEnabled}
                     onTimerTypeChange={handleTimerTypeChange}
@@ -169,10 +204,12 @@ function TimerDashboard() {
                     type={selectedType}
                     seconds={seconds}
                     minutes={minutes}
+                    hours={hours}
                     initialLoops={loopCount}
                     onHandleTimerFinished={handleTimerFinished}
                     remainingSeconds={remainingSeconds}
                     remainingMinutes={remainingMinutes}
+                    remainingHours={remainingHours}
                     remainingLoops={remainingLoops}
                 />
             }

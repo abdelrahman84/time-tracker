@@ -7,15 +7,18 @@ import loopNotification from '../../../Sounds/simple-notification.mp3';
 import alarmFinished from '../../../Sounds/alarm-finished.mp3';
 import TimerWidget from "../../reusables/TimerWidget";
 
-const SECONDS = 59;
+export const DEFAULT_SECONDS = 59;
+export const DEFAULT_MINUTES = 59;
 
 interface TimerDisplayProps {
     type: string;
     seconds: number;
     minutes: number;
+    hours: number;
     initialLoops?: number;
     remainingSeconds?: number;
     remainingMinutes?: number;
+    remainingHours?: number;
     remainingLoops?: number;
     onHandleTimerFinished(): void;
 }
@@ -24,7 +27,8 @@ function TimerDisplay(props: TimerDisplayProps) {
     const [isTimerOn, setIsTimerOn] = useState(true);
     const [remainingLoops, setRemainingLoops] = useState(1);
     const [localMinutes, setLocalMinutes] = useState(0);
-    const [localSeconds, setLocalSeconds] = useState(59);
+    const [localHours, setLocalHours] = useState(0);
+    const [localSeconds, setLocalSeconds] = useState(DEFAULT_SECONDS);
     const [isTimerFinishedModalOpen, setIsTimerFinishedModalOpen] = useState(false);
     const [isResetModalOpen, setIsResetModalOpen] = useState(false);
     const [playLoopSound] = useSound(loopNotification);
@@ -35,7 +39,8 @@ function TimerDisplay(props: TimerDisplayProps) {
     useEffect(() => {
         setRemainingLoops(props.remainingLoops);
         setLocalMinutes(props.remainingMinutes);
-        setLocalSeconds(props.remainingSeconds);
+        setLocalHours(props.remainingHours);
+        setLocalSeconds(props.remainingSeconds > 0 ? props.remainingSeconds : DEFAULT_SECONDS);
     }, []);
 
     useEffect(() => {
@@ -58,11 +63,20 @@ function TimerDisplay(props: TimerDisplayProps) {
             if (localMinutes >= 1) {
 
                 let updatedMinutes = localMinutes - 1;
-                updatedSeconds = SECONDS;
+                updatedSeconds = DEFAULT_SECONDS;
                 setLocalMinutes(updatedMinutes);
             }
 
             if (localMinutes === 0) {
+                if (localHours >= 1) {
+                    let updatedHours = localHours - 1;
+                    setLocalHours(updatedHours);
+                    setLocalMinutes(DEFAULT_MINUTES);
+                    setLocalSeconds(DEFAULT_SECONDS);
+                    updateCurrentTimerSnapShot();
+                    return;
+                }
+
                 if (remainingLoops == 1) {
                     playAlarmFinished();
                     setIsTimerOn(false);
@@ -137,6 +151,7 @@ function TimerDisplay(props: TimerDisplayProps) {
             ...timer,
             remainingSeconds: localSeconds,
             remainingMinutes: localMinutes,
+            remainingHours: localHours,
             remainingLoops
         }));
     }
@@ -149,6 +164,7 @@ function TimerDisplay(props: TimerDisplayProps) {
                 <TimerWidget
                     seconds={localSeconds}
                     minutes={localMinutes}
+                    hours={localHours}
                 />
 
                 <Button

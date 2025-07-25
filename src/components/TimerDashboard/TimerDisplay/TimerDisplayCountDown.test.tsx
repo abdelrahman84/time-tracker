@@ -10,6 +10,7 @@ test('TimerDisplayCountDown should render correctly', async () => {
         <TimerDisplay
             seconds={1}
             minutes={0}
+            hours={0}
             type={COUNTDOWN}
             onHandleTimerFinished={handleTimerFinished}
         />
