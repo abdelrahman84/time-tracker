@@ -11,6 +11,7 @@ interface TimerStopWatchProps {
 function TimerStopWatch(props: TimerStopWatchProps) {
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(0);
+    const [hours, setHours] = useState(0);
     const [isTimerOn, setIsTimerOn] = useState(false);
 
     useEffect(() => {
@@ -19,6 +20,13 @@ function TimerStopWatch(props: TimerStopWatchProps) {
                 setSeconds(seconds + 1);
 
                 if (seconds >= 59) {
+                    if (minutes >= 59) {
+                        setHours(hours + 1);
+                        setMinutes(0);
+                        setSeconds(0);
+                        return;
+                    }
+                    
                     setMinutes(minutes + 1);
                     setSeconds(0);
                 }
@@ -55,7 +63,7 @@ function TimerStopWatch(props: TimerStopWatchProps) {
     return (
         <Container className={styles.timerStopWatch}>
             <div>
-                <TimerWidget seconds={seconds} minutes={minutes} />
+                <TimerWidget hours={hours} seconds={seconds} minutes={minutes} />
             </div>
 
             <Button
