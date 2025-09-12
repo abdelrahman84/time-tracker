@@ -36,6 +36,14 @@ function ResetPassword() {
                     position: 'bottom-right'
                 })
             }
+        }).catch(error => {
+            toast({
+                title: 'Error',
+                description: error?.response?.data?.password?.[0] ?? 'Password reset failed. Please try again later',
+                status: 'error',
+                duration: 3000,
+                position: 'bottom-right'
+            })
         }).finally(() => {
             formik.setSubmitting(false);
         });
