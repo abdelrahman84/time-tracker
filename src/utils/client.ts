@@ -1,8 +1,7 @@
 import axios from "axios";
-import configData from '../config.json';
 
 const client = axios.create({
-    baseURL: configData.REACT_APP_BASE_URL
+    baseURL: process.env.REACT_APP_BASE_URL as string,
 });
 
 const errorHandler = (error: any) => {
