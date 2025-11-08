@@ -55,15 +55,13 @@ function Login() {
             return;
         }
 
-        if (response.type === 'user/login/rejected') {
-            toast({
-                title: 'Failed to login. Wrong email or password',
-                status: 'error',
-                duration: 3000,
-                position: 'bottom-right',
-                isClosable: true,
-            })
-        }
+        toast({
+            title: 'Failed to login. Wrong email or password',
+            status: 'error',
+            duration: 3000,
+            position: 'top-right',
+            isClosable: true,
+        })
     }
 
     const handleGuest = (): void => {
