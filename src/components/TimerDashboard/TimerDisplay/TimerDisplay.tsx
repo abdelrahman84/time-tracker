@@ -25,10 +25,11 @@ interface TimerDisplayProps {
 
 function TimerDisplay(props: TimerDisplayProps) {
     const [isTimerOn, setIsTimerOn] = useState(true);
-    const [remainingLoops, setRemainingLoops] = useState(1);
-    const [localMinutes, setLocalMinutes] = useState(0);
-    const [localHours, setLocalHours] = useState(0);
-    const [localSeconds, setLocalSeconds] = useState(DEFAULT_SECONDS);
+    const [remainingLoops, setRemainingLoops] = useState(props.remainingLoops ?? 1);
+    const [localMinutes, setLocalMinutes] = useState(props.remainingMinutes ?? 0);
+    const [localHours, setLocalHours] = useState(props.remainingHours ?? 0);
+    const [localSeconds, setLocalSeconds] = useState(props.remainingSeconds > 0 ? props.remainingSeconds : DEFAULT_SECONDS);
+    const targetEndTimeRef = React.useRef<number | null>(null);
     const [isTimerFinishedModalOpen, setIsTimerFinishedModalOpen] = useState(false);
     const [isResetModalOpen, setIsResetModalOpen] = useState(false);
     const [playLoopSound] = useSound(loopNotification);
@@ -36,14 +37,16 @@ function TimerDisplay(props: TimerDisplayProps) {
 
     const cancelResetModalRef = React.useRef<HTMLButtonElement>(null);
 
-    useEffect(() => {
-        setRemainingLoops(props.remainingLoops);
-        setLocalMinutes(props.remainingMinutes);
-        setLocalHours(props.remainingHours);
-        setLocalSeconds(props.remainingSeconds > 0 ? props.remainingSeconds : DEFAULT_SECONDS);
-    }, []);
+    if (isTimerOn && !targetEndTimeRef.current) {
+        const totalSeconds = localHours * 3600 + localMinutes * 60 + localSeconds * 1000;
+        targetEndTimeRef.current =
+            Date.now() +
+            totalSeconds + 1000;
+    }
 
     useEffect(() => {
+        if (!isTimerOn) return;
+
         const timer = setInterval(() => {
             updateCurrentCountDown()
         }, 1000);
@@ -53,49 +56,45 @@ function TimerDisplay(props: TimerDisplayProps) {
     }, [isTimerOn, localMinutes, localSeconds]);
 
     const updateCurrentCountDown = (): void => {
-        if (!isTimerOn) {
+        if (!isTimerOn || !targetEndTimeRef.current) {
             return;
         }
 
-        let updatedSeconds = localSeconds - 1;
+        const now = Date.now();
+        const diff = Math.max(targetEndTimeRef.current - now, 0);
 
-        if (updatedSeconds < 0) {
-            if (localMinutes >= 1) {
+        const totalSeconds = Math.floor(diff / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
 
-                let updatedMinutes = localMinutes - 1;
-                updatedSeconds = DEFAULT_SECONDS;
-                setLocalMinutes(updatedMinutes);
+        setLocalHours(hours);
+        setLocalMinutes(minutes);
+        setLocalSeconds(seconds);
+
+        if (diff === 0) {
+            if (remainingLoops > 1) {
+                let updatedRemainingLoops = remainingLoops - 1;
+                setRemainingLoops(updatedRemainingLoops);
+                playLoopSound();
+
+                setLocalMinutes(props.minutes);
+                setLocalSeconds(props.seconds);
+                // reset target end time
+                const newEndTime = Date.now() + (props.minutes * 60000) + (props.seconds * 1000) + 1000;
+                targetEndTimeRef.current = newEndTime;
+                updateCurrentTimerSnapShot();
+                return;
             }
 
-            if (localMinutes === 0) {
-                if (localHours >= 1) {
-                    let updatedHours = localHours - 1;
-                    setLocalHours(updatedHours);
-                    setLocalMinutes(DEFAULT_MINUTES);
-                    setLocalSeconds(DEFAULT_SECONDS);
-                    updateCurrentTimerSnapShot();
-                    return;
-                }
-
-                if (remainingLoops == 1) {
-                    playAlarmFinished();
-                    setIsTimerOn(false);
-                    setIsTimerFinishedModalOpen(true);
-                    return;
-                }
-
-                if (remainingLoops > 1) {
-                    let updatedRemainingLoops = remainingLoops - 1;
-                    setRemainingLoops(updatedRemainingLoops);
-                    playLoopSound();
-
-                    setLocalMinutes(props.minutes);
-                    updatedSeconds = props.seconds;
-                }
+            if (remainingLoops === 1) {
+                playAlarmFinished();
+                setIsTimerOn(false);
+                setIsTimerFinishedModalOpen(true);
+                targetEndTimeRef.current = null;
+                return;
             }
         }
-
-        setLocalSeconds(updatedSeconds);
 
         updateCurrentTimerSnapShot();
     }
@@ -146,10 +145,13 @@ function TimerDisplay(props: TimerDisplayProps) {
     }
 
     const updateCurrentTimerSnapShot = (): void => {
+        const totalReaminginSeconds = localHours * 3600 + localMinutes * 60 + localSeconds * 1000 - 1000;
+
         const timer = JSON.parse(localStorage.getItem('timer') || '{}');
         localStorage.setItem('timer', JSON.stringify({
             ...timer,
-            remainingSeconds: localSeconds,
+            totalReaminginSeconds,
+            remainingSeconds: localSeconds - 1,
             remainingMinutes: localMinutes,
             remainingHours: localHours,
             remainingLoops
