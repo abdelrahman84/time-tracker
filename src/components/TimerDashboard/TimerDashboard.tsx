@@ -67,6 +67,7 @@ function TimerDashboard() {
         localStorage.setItem('timer', JSON.stringify({
             seconds,
             minutes,
+            hours,
             remainingSeconds,
             remainingMinutes,
             remainingHours,

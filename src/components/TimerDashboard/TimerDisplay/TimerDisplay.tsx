@@ -25,10 +25,10 @@ interface TimerDisplayProps {
 
 function TimerDisplay(props: TimerDisplayProps) {
     const [isTimerOn, setIsTimerOn] = useState(true);
-    const [remainingLoops, setRemainingLoops] = useState(props.remainingLoops ?? 1);
-    const [localMinutes, setLocalMinutes] = useState(props.remainingMinutes ?? 0);
-    const [localHours, setLocalHours] = useState(props.remainingHours ?? 0);
-    const [localSeconds, setLocalSeconds] = useState(props.remainingSeconds > 0 ? props.remainingSeconds : DEFAULT_SECONDS);
+    const [remainingLoops, setRemainingLoops] = useState(Number(props.remainingLoops ?? 1));
+    const [localMinutes, setLocalMinutes] = useState(Number(props.remainingMinutes ?? 0));
+    const [localHours, setLocalHours] = useState(Number(props.remainingHours ?? 0));
+    const [localSeconds, setLocalSeconds] = useState(Number(props.remainingSeconds > 0 ? props.remainingSeconds : DEFAULT_SECONDS));
     const targetEndTimeRef = React.useRef<number | null>(null);
     const [isTimerFinishedModalOpen, setIsTimerFinishedModalOpen] = useState(false);
     const [isResetModalOpen, setIsResetModalOpen] = useState(false);
@@ -38,10 +38,10 @@ function TimerDisplay(props: TimerDisplayProps) {
     const cancelResetModalRef = React.useRef<HTMLButtonElement>(null);
 
     if (isTimerOn && !targetEndTimeRef.current) {
-        const totalSeconds = localHours * 3600 + localMinutes * 60 + localSeconds * 1000;
+        const totalMilliseconds = (localHours * 3600 + localMinutes * 60 + localSeconds) * 1000;
         targetEndTimeRef.current =
             Date.now() +
-            totalSeconds + 1000;
+            totalMilliseconds + 1000;
     }
 
     useEffect(() => {
@@ -145,12 +145,12 @@ function TimerDisplay(props: TimerDisplayProps) {
     }
 
     const updateCurrentTimerSnapShot = (): void => {
-        const totalReaminginSeconds = localHours * 3600 + localMinutes * 60 + localSeconds * 1000 - 1000;
+        const totalRemainingMilliseconds = localHours * 3600 + localMinutes * 60 + localSeconds * 1000 - 1000;
 
         const timer = JSON.parse(localStorage.getItem('timer') || '{}');
         localStorage.setItem('timer', JSON.stringify({
             ...timer,
-            totalReaminginSeconds,
+            totalRemainingMilliseconds,
             remainingSeconds: localSeconds - 1,
             remainingMinutes: localMinutes,
             remainingHours: localHours,
