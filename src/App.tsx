@@ -11,6 +11,7 @@ import Register from './components/Auth/Register';
 import VerifyEmail from './components/Auth/VerifyEmail';
 import theme from './theme';
 import ChangeColorModeSwitch from './components/Features/ChangeColorModeSwitch';
+import BetaRibbon from './components/Features/BetaRibbon';
 import GuardedRoute from './utils/guardedRoutes';
 import GuestRoute from './utils/guestRoutes';
 import ResetPassword from './components/Auth/ResetPassword';
@@ -20,6 +21,7 @@ function App() {
     <Provider store={store}>
       <Router>
         <ChakraProvider theme={theme}>
+          <BetaRibbon />
           <ChangeColorModeSwitch />
           <Routes>
             <Route path="/" element={
