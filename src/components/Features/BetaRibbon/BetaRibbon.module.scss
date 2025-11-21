@@ -1,22 +1,21 @@
 .betaRibbon {
-  position: fixed;
-  top: -2.06rem;
-  left: 0;
-  z-index: 1000;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 0.35rem 2.5rem;
-  transform: rotate(-45deg) translate(-50%, 50%);
-  transform-origin: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: -2.06rem;
+    left: 0;
+    z-index: 1000;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 0.35rem 2.5rem;
+    transform: rotate(-45deg) translate(-50%, 50%);
+    transform-origin: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .betaText {
-  color: white;
-  font-weight: bold;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  line-height: 1.2;
+    color: white;
+    font-weight: bold;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    line-height: 1.2;
 }
-

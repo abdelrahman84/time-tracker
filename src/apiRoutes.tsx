@@ -1,6 +1,6 @@
 const apiRoutes = {
     user: {
-        checkEmail: "/check_email_before_login",
+        checkEmail: "/check_email",
         register: "/users",
         login: "/login",
         verifyToken: "/verify_token",
