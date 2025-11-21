@@ -108,6 +108,10 @@ function TimerDisplay(props: TimerDisplayProps) {
     }
 
     const handleOnTimerClick = (): void => {
+        if (isTimerOn) {
+            targetEndTimeRef.current = null;
+        }
+
         setIsTimerOn(!isTimerOn);
     }
 
@@ -145,12 +149,9 @@ function TimerDisplay(props: TimerDisplayProps) {
     }
 
     const updateCurrentTimerSnapShot = (): void => {
-        const totalRemainingMilliseconds = localHours * 3600 + localMinutes * 60 + localSeconds * 1000 - 1000;
-
         const timer = JSON.parse(localStorage.getItem('timer') || '{}');
         localStorage.setItem('timer', JSON.stringify({
             ...timer,
-            totalRemainingMilliseconds,
             remainingSeconds: localSeconds - 1,
             remainingMinutes: localMinutes,
             remainingHours: localHours,
