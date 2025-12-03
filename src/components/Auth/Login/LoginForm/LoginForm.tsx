@@ -5,14 +5,17 @@ import styles from './LoginForm.module.scss';
 import { EmailValue } from "../Login";
 
 interface LoginFormProps {
-    onHandleLogin(values: EmailValue): void;
+    onHandleLogin(values: EmailValue): Promise<void>;
 }
 
 function LoginForm(props: LoginFormProps) {
 
     async function handleSubmit(values: EmailValue) {
-        formik.setSubmitting(false);
-        props.onHandleLogin(values)
+        try {
+            await props.onHandleLogin(values);
+        } finally {
+            formik.setSubmitting(false);
+        }
     }
 
     const formik = useFormik({
@@ -51,7 +54,7 @@ function LoginForm(props: LoginFormProps) {
                     colorScheme="green"
                     variant='solid'
                     isLoading={formik.isSubmitting}
-                    isDisabled={!formik.values.email || !!formik.errors.email}
+                    isDisabled={formik.isSubmitting || !formik.values.email || !!formik.errors.email}
                     type='submit'
                     data-testid="login-btn"
                 >

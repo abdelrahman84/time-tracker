@@ -44,6 +44,14 @@ function Login() {
                 setEmail(values.email);
                 setShowPasswordForm(true);
             }
+        }).catch(error => {
+            toast({
+                title: 'Error',
+                description: 'Something went wrong. Please try again later',
+                status: 'error',
+                duration: 3000,
+                position: 'bottom-right',
+            })
         })
     }
 

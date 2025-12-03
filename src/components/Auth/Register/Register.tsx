@@ -1,4 +1,4 @@
-import { Card, Container } from "@chakra-ui/react";
+import { Card, Container, useToast } from "@chakra-ui/react";
 
 import styles from './Register.module.scss';
 import RegisterForm from "./RegisterForm";
@@ -11,12 +11,23 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function Register() {
+    const toast = useToast();
     const loadingUser = useSelector((state: RootState) => state.user.loadingUser);
     const navigate = useNavigate();
 
     const dispatch: AppDispatch = useAppDispatch();
-    const handleRegister = (values: RegisterFormValues): void => {
-        dispatch(register({ values, navigate }))
+    const handleRegister = async (values: RegisterFormValues): Promise<void> => {
+        try {
+            await dispatch(register({ values, navigate })).unwrap();
+        } catch (error: any) {
+            toast({
+                title: 'Error',
+                description: 'Failed to register',
+                status: 'error',
+                duration: 3000,
+                position: 'bottom-right',
+            })
+        }
     }
 
     return (

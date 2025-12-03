@@ -7,15 +7,18 @@ export interface PasswordValues {
 }
 
 interface PasswordFormProps {
-    onHandlePassword(values: PasswordValues): void;
+    onHandlePassword(values: PasswordValues): Promise<void>;
     onHandleForgotPassword(): void;
 }
 
 function PasswordForm(props: PasswordFormProps) {
 
     async function handleSubmit(values: PasswordValues) {
-        formik.setSubmitting(false);
-        props.onHandlePassword(values)
+        try {
+            await props.onHandlePassword(values)
+        } finally {
+            formik.setSubmitting(false);
+        }
     }
 
     const formik = useFormik({

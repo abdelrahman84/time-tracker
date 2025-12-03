@@ -11,7 +11,7 @@ export interface RegisterFormValues {
 }
 
 interface RegisterFormProps {
-    onHandleRegister(values: RegisterFormValues): void;
+    onHandleRegister(values: RegisterFormValues): Promise<void>;
     isDisabled: boolean;
 }
 
@@ -27,8 +27,11 @@ function RegisterForm(props: RegisterFormProps) {
     }, []);
 
     async function handleSubmit(values: RegisterFormValues) {
-        formik.setSubmitting(false);
-        props.onHandleRegister(values);
+        try {
+            await props.onHandleRegister(values);
+        } finally {
+            formik.setSubmitting(false);
+        }
     }
 
     const formik = useFormik({
