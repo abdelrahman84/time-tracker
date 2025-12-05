@@ -117,7 +117,7 @@ function Login() {
         <Container className={styles.login}>
             <Card>
                 {cardContent()}
-                <Button colorScheme="teal" data-testid="guest-btn" onClick={handleGuest}>Continue as guest</Button>
+                {/* <Button colorScheme="teal" data-testid="guest-btn" onClick={handleGuest}>Continue as guest</Button> */}
             </Card>
 
             <SwitchPage className={styles.switchPage} title="Don't have an account?" linkTitle="Sign up" linkUrl={routes.auth.register} />
