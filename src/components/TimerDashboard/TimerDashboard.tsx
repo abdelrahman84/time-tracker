@@ -108,11 +108,6 @@ function TimerDashboard() {
         setRemainingMinutes(0);
         setRemainingHours(0);
         setRemainingSeconds(0);
-
-        dispatch(setSeconds(0));
-        dispatch(setMinutes(0));
-        dispatch(setHours(0));
-        dispatch(setLoopCount(1));
     }
 
     const handleTimerTypeChange = () => {
