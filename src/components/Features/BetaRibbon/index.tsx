@@ -1,4 +1,3 @@
-import BetaRibbon from "./BetaRibbon";
+import BetaRibbon from './BetaRibbon';
 
 export default BetaRibbon;
-

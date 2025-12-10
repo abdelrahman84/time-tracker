@@ -24,33 +24,47 @@ function App() {
           <BetaRibbon />
           <ChangeColorModeSwitch />
           <Routes>
-            <Route path="/" element={
-              <GuestRoute>
-                <Login />
-              </GuestRoute>
-            } />
+            <Route
+              path="/"
+              element={
+                <GuestRoute>
+                  <Login />
+                </GuestRoute>
+              }
+            />
 
-            <Route path={routes.auth.login} element={
-              <GuestRoute>
-                <Login />
-              </GuestRoute>
-            } />
+            <Route
+              path={routes.auth.login}
+              element={
+                <GuestRoute>
+                  <Login />
+                </GuestRoute>
+              }
+            />
 
-            <Route path={routes.auth.register} element={
-              <GuestRoute>
-                <Register />
-              </GuestRoute>
-            } />
+            <Route
+              path={routes.auth.register}
+              element={
+                <GuestRoute>
+                  <Register />
+                </GuestRoute>
+              }
+            />
 
-            <Route path={routes.timerDashboard.main} element={
-              <GuardedRoute>
-                <TimerDashboard
-                />
-              </GuardedRoute>
-            } />
+            <Route
+              path={routes.timerDashboard.main}
+              element={
+                <GuardedRoute>
+                  <TimerDashboard />
+                </GuardedRoute>
+              }
+            />
 
             <Route path={routes.auth.verifyEmail} element={<VerifyEmail />} />
-            <Route path={routes.auth.resetPassword} element={<ResetPassword />} />
+            <Route
+              path={routes.auth.resetPassword}
+              element={<ResetPassword />}
+            />
           </Routes>
         </ChakraProvider>
       </Router>

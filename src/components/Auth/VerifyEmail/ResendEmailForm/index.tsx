@@ -1,3 +1,3 @@
-import ResendEmailForm from "./ResendEmailForm";
+import ResendEmailForm from './ResendEmailForm';
 
 export default ResendEmailForm;

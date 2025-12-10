@@ -1,3 +1,3 @@
-import TimerCountdown from "./TimerCountdown"
+import TimerCountdown from './TimerCountdown';
 
 export default TimerCountdown;

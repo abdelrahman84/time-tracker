@@ -1,3 +1,3 @@
-import PasswordForm from "./PasswordForm";
+import PasswordForm from './PasswordForm';
 
 export default PasswordForm;

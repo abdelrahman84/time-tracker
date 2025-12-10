@@ -1,3 +1,3 @@
-import TimerWidget from "./TimerWidget";
+import TimerWidget from './TimerWidget';
 
 export default TimerWidget;

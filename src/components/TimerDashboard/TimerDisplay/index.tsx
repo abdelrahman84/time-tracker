@@ -1,3 +1,3 @@
-import TimerDisplay from "./TimerDisplay";
+import TimerDisplay from './TimerDisplay';
 
 export default TimerDisplay;

@@ -1,14 +1,14 @@
 .verifyEmail {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 
-    .invalidHeader {
-        color: red;
-    }
+  .invalidHeader {
+    color: red;
+  }
 
-    .switchPage {
-        margin-top: 1rem;
-    }
+  .switchPage {
+    margin-top: 1rem;
+  }
 }

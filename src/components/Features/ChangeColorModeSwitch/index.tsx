@@ -1,3 +1,3 @@
-import ChangeColorModeSwitch from "./ChangeColorModeSwitch";
+import ChangeColorModeSwitch from './ChangeColorModeSwitch';
 
 export default ChangeColorModeSwitch;

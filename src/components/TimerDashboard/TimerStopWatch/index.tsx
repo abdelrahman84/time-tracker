@@ -1,3 +1,3 @@
-import TimerStopWatch from "./TimerStopWatch";
+import TimerStopWatch from './TimerStopWatch';
 
 export default TimerStopWatch;

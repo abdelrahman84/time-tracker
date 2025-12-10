@@ -1,3 +1,3 @@
-import TimerDashboard from "./TimerDashboard";
+import TimerDashboard from './TimerDashboard';
 
 export default TimerDashboard;
