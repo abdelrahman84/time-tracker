@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import TimerDisplay from './TimerDisplay';
 import { COUNTDOWN } from '../TimerDashboard';
@@ -19,7 +19,7 @@ test('TimerDisplayCountDown should render correctly', async () => {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   expect(screen.getByText('Timer countdown Finished')).not.toBeNull();
 
-  await act(() => {
+  await (() => {
     fireEvent.keyDown(screen.getByText('Timer countdown Finished'), {
       key: 'Escape',
       code: 'Escape',

@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import ResendEmailForm from './ResendEmailForm';
 
 test('ResendEmailForm should render correctly', async () => {
@@ -8,7 +8,7 @@ test('ResendEmailForm should render correctly', async () => {
 
   // test invalid input
   const emailInput = screen.getByLabelText('email') as HTMLInputElement;
-  await act(() => {
+  await (() => {
     fireEvent.change(emailInput, { target: { value: 'wrong_input' } });
     fireEvent.click(screen.getByTestId('submit-btn'));
   });
@@ -16,7 +16,7 @@ test('ResendEmailForm should render correctly', async () => {
   expect(handleSubmit).not.toHaveBeenCalled();
 
   // test correct input
-  await act(() => {
+  await (() => {
     fireEvent.change(emailInput, {
       target: { value: 'correct_input@test.com' },
     });

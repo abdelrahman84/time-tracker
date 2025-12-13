@@ -17,24 +17,24 @@ function TimerStopWatch(props: TimerStopWatchProps) {
   useEffect(() => {
     const timer = setInterval(() => {
       if (isTimerOn) {
-        setSeconds(seconds + 1);
-
-        if (seconds >= 59) {
-          if (minutes >= 59) {
-            setHours(hours + 1);
-            setMinutes(0);
-            setSeconds(0);
-            return;
+        setSeconds((s) => {
+          if (s >= 59) {
+            setMinutes((m) => {
+              if (m >= 59) {
+                setHours((h) => h + 1);
+                return 0;
+              }
+              return m + 1;
+            });
+            return 0;
           }
-
-          setMinutes(minutes + 1);
-          setSeconds(0);
-        }
+          return s + 1;
+        });
       }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isTimerOn, seconds, minutes]);
+  }, [isTimerOn]);
 
   const handleOnTimerClick = (): void => {
     setIsTimerOn(!isTimerOn);

@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import {
   Alert,
   AlertDialog,
@@ -71,17 +71,21 @@ function TimerDisplay(props: TimerDisplayProps) {
     targetEndTimeRef.current = Date.now() + totalMilliseconds + 1000;
   }
 
-  useEffect(() => {
-    if (!isTimerOn) return;
+  const updateCurrentTimerSnapShot = useCallback((): void => {
+    const timer = JSON.parse(localStorage.getItem('timer') || '{}');
+    localStorage.setItem(
+      'timer',
+      JSON.stringify({
+        ...timer,
+        remainingSeconds: localSeconds - 1,
+        remainingMinutes: localMinutes,
+        remainingHours: localHours,
+        remainingLoops,
+      }),
+    );
+  }, [localSeconds, localMinutes, localHours, remainingLoops]);
 
-    const timer = setInterval(() => {
-      updateCurrentCountDown();
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [isTimerOn, localMinutes, localSeconds]);
-
-  const updateCurrentCountDown = (): void => {
+  const updateCurrentCountDown = useCallback((): void => {
     if (!isTimerOn || !targetEndTimeRef.current) {
       return;
     }
@@ -124,7 +128,25 @@ function TimerDisplay(props: TimerDisplayProps) {
     }
 
     updateCurrentTimerSnapShot();
-  };
+  }, [
+    isTimerOn,
+    remainingLoops,
+    playLoopSound,
+    playAlarmFinished,
+    props.minutes,
+    props.seconds,
+    updateCurrentTimerSnapShot,
+  ]);
+
+  useEffect(() => {
+    if (!isTimerOn) return;
+
+    const timer = setInterval(() => {
+      updateCurrentCountDown();
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isTimerOn, updateCurrentCountDown]);
 
   const getTimerButtonLabel = (): string => {
     if (isTimerOn) {
@@ -173,20 +195,6 @@ function TimerDisplay(props: TimerDisplayProps) {
   const handleTimerTypeChange = (): void => {
     setIsTimerOn(false);
     props.onHandleTimerFinished();
-  };
-
-  const updateCurrentTimerSnapShot = (): void => {
-    const timer = JSON.parse(localStorage.getItem('timer') || '{}');
-    localStorage.setItem(
-      'timer',
-      JSON.stringify({
-        ...timer,
-        remainingSeconds: localSeconds - 1,
-        remainingMinutes: localMinutes,
-        remainingHours: localHours,
-        remainingLoops,
-      }),
-    );
   };
 
   return (

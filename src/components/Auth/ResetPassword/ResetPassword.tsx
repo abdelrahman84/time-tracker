@@ -9,8 +9,6 @@ import {
   FormLabel,
   Input,
   Stack,
-  Toast,
-  position,
   useToast,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
@@ -85,7 +83,7 @@ function ResetPassword() {
 
       if (
         values.password &&
-        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,}$/i.test(
+        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/i.test(
           values.password,
         )
       ) {

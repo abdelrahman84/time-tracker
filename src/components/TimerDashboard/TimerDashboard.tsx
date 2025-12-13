@@ -77,7 +77,7 @@ function TimerDashboard() {
       remainingMinutes = DEFAULT_MINUTES;
     }
 
-    if (hours == 1 && minutes <= 0 && seconds <= 0) {
+    if (hours === 1 && minutes <= 0 && seconds <= 0) {
       remainingHours = 0;
     }
 

@@ -56,7 +56,13 @@ function TimerCountdown(props: TimerCountdownProps) {
     if (props.initialLoops) {
       setLoopCount(props.initialLoops);
     }
-  }, []);
+  }, [
+    props.seconds,
+    props.minutes,
+    props.hours,
+    props.isLoopEnabled,
+    props.initialLoops,
+  ]);
 
   const handleSecondsChange = (event: any) => {
     setSeconds(event.target.value);

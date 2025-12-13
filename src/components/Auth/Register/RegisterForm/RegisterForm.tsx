@@ -23,15 +23,6 @@ interface RegisterFormProps {
 }
 
 function RegisterForm(props: RegisterFormProps) {
-  useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const email = queryParams.get('email');
-
-    if (email) {
-      formik.setFieldValue('email', email);
-    }
-  }, []);
-
   async function handleSubmit(values: RegisterFormValues) {
     try {
       await props.onHandleRegister(values);
@@ -71,7 +62,7 @@ function RegisterForm(props: RegisterFormProps) {
 
       if (
         values.password &&
-        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,}$/i.test(
+        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/i.test(
           values.password,
         )
       ) {
@@ -82,6 +73,15 @@ function RegisterForm(props: RegisterFormProps) {
       return errors;
     },
   });
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const email = queryParams.get('email');
+
+    if (email) {
+      formik.setFieldValue('email', email);
+    }
+  }, [formik]);
 
   return (
     <div>
