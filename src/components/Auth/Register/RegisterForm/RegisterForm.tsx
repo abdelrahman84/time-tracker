@@ -74,14 +74,16 @@ function RegisterForm(props: RegisterFormProps) {
     },
   });
 
+  const { setFieldValue } = formik;
+
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const email = queryParams.get('email');
 
     if (email) {
-      formik.setFieldValue('email', email);
+      setFieldValue('email', email);
     }
-  }, [formik]);
+  }, [setFieldValue]);
 
   return (
     <div>
