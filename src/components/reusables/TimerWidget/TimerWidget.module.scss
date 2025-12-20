@@ -6,10 +6,18 @@
 
   h3 {
     font-size: 10rem;
+
+    @media (max-width: 768px) {
+      font-size: 4rem;
+    }
   }
 
   span {
     font-size: 8rem;
     padding: 0 0.2rem;
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
   }
 }
