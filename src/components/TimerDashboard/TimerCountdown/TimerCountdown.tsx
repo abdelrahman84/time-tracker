@@ -56,6 +56,10 @@ function TimerCountdown(props: TimerCountdownProps) {
     if (props.initialLoops) {
       setLoopCount(props.initialLoops);
     }
+
+    if (props.initialLoops && props.initialLoops > 1 && !isLoopEnabled) {
+      setIsLoopEnabled(true);
+    }
   }, [
     props.seconds,
     props.minutes,
@@ -185,6 +189,7 @@ function TimerCountdown(props: TimerCountdownProps) {
 
         <Checkbox
           defaultChecked={isLoopEnabled}
+          isChecked={isLoopEnabled}
           onChange={handleToggleLoop}
           aria-label="repeat-checkbox"
           disabled={isRepeatDisabled()}
