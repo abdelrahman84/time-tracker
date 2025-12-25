@@ -66,6 +66,7 @@ function TimerCountdown(props: TimerCountdownProps) {
     props.hours,
     props.isLoopEnabled,
     props.initialLoops,
+    isLoopEnabled,
   ]);
 
   const handleSecondsChange = (event: any) => {
