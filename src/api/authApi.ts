@@ -27,4 +27,8 @@ export const AuthApi = {
   }) {
     return client.post(apiRoutes.user.resetPassword, data);
   },
+
+  refreshToken: async function (refreshToken: string) {
+    return client.post(apiRoutes.user.refreshToken, { refresh: refreshToken });
+  },
 };

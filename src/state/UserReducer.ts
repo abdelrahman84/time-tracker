@@ -7,6 +7,7 @@ import apiRoutes from '../apiRoutes';
 import { RegisterFormValues } from '../components/Auth/Register/RegisterForm/RegisterForm';
 import routes from '../routes';
 import { LoginValues } from '../components/Auth/Login/Login';
+import { AuthApi } from '../api/authApi';
 
 export const register = createAsyncThunk(
   'user/register',
@@ -46,6 +47,40 @@ export const login = createAsyncThunk(
   },
 );
 
+export const refreshToken = createAsyncThunk(
+  'user/refreshToken',
+  async (_, thunkAPI) => {
+    try {
+      const userStr = localStorage.getItem('user');
+      if (!userStr) {
+        return thunkAPI.rejectWithValue('No user found');
+      }
+
+      const user: User = JSON.parse(userStr);
+      const refreshTokenValue = user.access_tokens?.refresh;
+
+      if (!refreshTokenValue) {
+        return thunkAPI.rejectWithValue('No refresh token found');
+      }
+
+      const response = await AuthApi.refreshToken(refreshTokenValue);
+
+      // Update the user with new tokens
+      const updatedUser: User = {
+        ...user,
+        access_tokens: {
+          access: response.data.access,
+          refresh: refreshTokenValue, // Keep the same refresh token
+        },
+      };
+
+      return updatedUser;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Failed to refresh token');
+    }
+  },
+);
+
 export interface UserInitialState {
   user: User;
   loadingUser: boolean;
@@ -81,9 +116,14 @@ export const userSlice = createSlice({
       })
       .addCase(register.fulfilled, (state, action: any) => {
         state.loadingUser = false;
-        state.user = action.payload;
-
-        localStorage.setItem('user', JSON.stringify(action.payload));
+        // Extract only user object, ignoring other keys
+        const userData = action.payload.user
+          ? typeof action.payload.user === 'string'
+            ? JSON.parse(action.payload.user)
+            : action.payload.user
+          : action.payload;
+        state.user = userData;
+        localStorage.setItem('user', JSON.stringify(userData));
       })
       .addCase(register.rejected, (state, action) => {
         state.loadingUser = false;
@@ -97,13 +137,36 @@ export const userSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action: any) => {
         state.loadingUser = false;
-        state.user = action.payload;
-
-        localStorage.setItem('user', JSON.stringify(action.payload));
+        // Extract only user object from response, ignoring refresh/access keys
+        const userData = action.payload.user
+          ? typeof action.payload.user === 'string'
+            ? JSON.parse(action.payload.user)
+            : action.payload.user
+          : action.payload;
+        state.user = userData;
+        localStorage.setItem('user', JSON.stringify(userData));
       })
       .addCase(login.rejected, (state, action) => {
         state.loadingUser = false;
         state.error = action.error.message || 'Something went wrong';
+      });
+
+    builder
+      .addCase(refreshToken.pending, (state) => {
+        state.loadingUser = true;
+        state.error = null;
+      })
+      .addCase(refreshToken.fulfilled, (state, action: any) => {
+        state.loadingUser = false;
+        state.user = action.payload;
+        localStorage.setItem('user', JSON.stringify(action.payload));
+      })
+      .addCase(refreshToken.rejected, (state, action) => {
+        state.loadingUser = false;
+        state.error = action.error.message || 'Failed to refresh token';
+        // Clear user data if refresh fails
+        localStorage.removeItem('user');
+        state.user = initialState.user;
       });
   },
 });
