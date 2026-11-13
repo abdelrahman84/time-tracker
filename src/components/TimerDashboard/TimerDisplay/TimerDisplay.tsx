@@ -21,7 +21,7 @@ import useSound from 'use-sound';
 
 import styles from './TimerDisplay.module.scss';
 import loopNotification from '../../../Sounds/simple-notification.mp3';
-import alarmFinished from '../../../Sounds/alarm-finished.mp3';
+import alarmFinished from '../../../Sounds/timer-finished.wav';
 import TimerWidget from '../../reusables/TimerWidget';
 
 export const DEFAULT_SECONDS = 59;
